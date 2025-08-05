@@ -94,7 +94,11 @@ def assign_countries(df):
     return df
 
 if page == "🌍 Global Map":
-    pass
+    # Title and description
+    st.title("🌍 Global Earthquake Dashboard")
+    st.markdown("**Real-time visualization of earthquake activity worldwide**")
+
+if page == "🌍 Global Map":
 
 try:
     df = load_data()
