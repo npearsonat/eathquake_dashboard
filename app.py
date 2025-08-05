@@ -12,13 +12,13 @@ df["size"] = df["Magnitude"] ** 2  # Adjust this if sizes are too big
 # Create the map
 fig = px.scatter_mapbox(
     df,
-    lat="Latitude",         # capitalized
-    lon="Longitude",        # capitalized
+    lat="Latitude",       
+    lon="Longitude",        
     size="Magnitude",
     color="Magnitude",
-    zoom=1,
+    zoom=2,
     height=600,
-    mapbox_style="stamen-terrain"  # no token needed
+    mapbox_style="open-street-map"  
 )
 
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
