@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 # Title and description
-st.title("Global Earthquake Dashboard")
+st.title("🌍 Global Earthquake Dashboard")
 st.markdown("**Real-time visualization of earthquake activity worldwide**")
 
 # Load earthquake data
@@ -43,18 +43,70 @@ def load_data():
     
     return df
 
+# Function to assign country based on coordinates (simplified approach)
+@st.cache_data
+def assign_countries(df):
+    """
+    Assign countries to earthquakes based on coordinates.
+    This is a simplified approach using coordinate ranges.
+    For production, consider using a proper geocoding service.
+    """
+    df = df.copy()
+    
+    # Initialize country column
+    df['Country'] = 'Unknown'
+    
+    # Define approximate coordinate ranges for major earthquake-prone countries
+    # These are simplified bounding boxes - real implementation would use proper boundaries
+    country_bounds = {
+        'Japan': {'lat': (24, 46), 'lon': (123, 146)},
+        'Indonesia': {'lat': (-11, 6), 'lon': (95, 141)},
+        'Chile': {'lat': (-56, -17), 'lon': (-76, -66)},
+        'United States': {'lat': (25, 49), 'lon': (-180, -66)},  # Including Alaska
+        'Mexico': {'lat': (14, 33), 'lon': (-118, -86)},
+        'Turkey': {'lat': (36, 42), 'lon': (26, 45)},
+        'Iran': {'lat': (25, 40), 'lon': (44, 64)},
+        'Peru': {'lat': (-18, 0), 'lon': (-82, -68)},
+        'Greece': {'lat': (34, 42), 'lon': (19, 30)},
+        'Italy': {'lat': (36, 47), 'lon': (6, 19)},
+        'Philippines': {'lat': (4, 21), 'lon': (116, 127)},
+        'New Zealand': {'lat': (-47, -34), 'lon': (166, 179)},
+        'China': {'lat': (18, 54), 'lon': (73, 135)},
+        'India': {'lat': (6, 37), 'lon': (68, 97)},
+        'Afghanistan': {'lat': (29, 39), 'lon': (60, 75)},
+        'Russia': {'lat': (41, 82), 'lon': (19, 180)},
+        'Papua New Guinea': {'lat': (-12, -1), 'lon': (140, 157)},
+        'Ecuador': {'lat': (-5, 2), 'lon': (-92, -75)},
+        'Guatemala': {'lat': (13, 18), 'lon': (-93, -88)},
+        'Costa Rica': {'lat': (8, 11), 'lon': (-86, -82)}
+    }
+    
+    # Assign countries based on coordinate ranges
+    for country, bounds in country_bounds.items():
+        mask = (
+            (df['Latitude'] >= bounds['lat'][0]) & 
+            (df['Latitude'] <= bounds['lat'][1]) &
+            (df['Longitude'] >= bounds['lon'][0]) & 
+            (df['Longitude'] <= bounds['lon'][1])
+        )
+        df.loc[mask, 'Country'] = country
+    
+    return df
+
+if page == "🌍 Global Map":
+
 try:
     df = load_data()
     
     # Sidebar controls
-    st.sidebar.header(" Controls")
+    st.sidebar.header("🎛️ Controls")
     
     # Time range slider
     if not df.empty and 'DateTime' in df.columns:
         min_date = df['DateTime'].min().date()
         max_date = df['DateTime'].max().date()
         
-        st.sidebar.subheader("Time Range")
+        st.sidebar.subheader("📅 Time Range")
         date_range = st.sidebar.date_input(
             "Select date range:",
             value=(min_date, max_date),
@@ -69,7 +121,7 @@ try:
             start_date = end_date = date_range
     
     # Magnitude filter
-    st.sidebar.subheader("Magnitude Range")
+    st.sidebar.subheader("📊 Magnitude Range")
     min_mag = float(df['Magnitude'].min())
     max_mag = float(df['Magnitude'].max())
     
@@ -178,7 +230,7 @@ try:
         st.plotly_chart(fig, use_container_width=True)
         
         # Additional insights
-        st.subheader("Magnitude Distribution")
+        st.subheader("📈 Magnitude Distribution")
         
         col1, col2 = st.columns(2)
         
@@ -187,7 +239,7 @@ try:
             hist_fig = px.histogram(
                 filtered_df, 
                 x="Magnitude", 
-                nbins=20,
+                bins=20,
                 title="Frequency by Magnitude",
                 color_discrete_sequence=["#ff6b6b"]
             )
@@ -202,12 +254,19 @@ try:
                     filtered_df, 
                     x="Month", 
                     y="Magnitude",
-                    title="Magnitude Distribution Over Time",
-                    color_discrete_sequence=['#ff6b6b']
+                    title="Magnitude Distribution Over Time"
                 )
                 box_fig.update_layout(height=400)
-                box_fig.update_layout(xaxis_tickangle=45)
+                box_fig.update_xaxis(tickangle=45)
                 st.plotly_chart(box_fig, use_container_width=True)
+        
+        # Show recent high-magnitude earthquakes
+        st.subheader("🚨 Highest Magnitude Earthquakes")
+        top_earthquakes = filtered_df.nlargest(10, 'Magnitude')[['Magnitude', 'Latitude', 'Longitude']]
+        if 'DateTime' in filtered_df.columns:
+            top_earthquakes = filtered_df.nlargest(10, 'Magnitude')[['DateTime', 'Magnitude', 'Latitude', 'Longitude']]
+        
+        st.dataframe(top_earthquakes, use_container_width=True)
 
 except FileNotFoundError:
     st.error("🚫 Could not find 'data/database.csv'. Please make sure the file exists in the correct location.")
