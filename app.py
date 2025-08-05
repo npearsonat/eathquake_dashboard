@@ -170,8 +170,7 @@ try:
         # Update traces for better visibility
         fig.update_traces(
             marker=dict(
-                opacity=0.7,
-                line=dict(width=0.5, color='darkred')
+                opacity=0.7
             )
         )
         
