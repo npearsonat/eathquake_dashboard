@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
-st.title("Earthquake Data Explorer")
+import json
 
 @st.cache_data
 def load_data():
@@ -10,11 +9,13 @@ def load_data():
     df['Datetime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='coerce')
     return df
 
+def load_geojson():
+    with open("data/tectonic_boundaries.json") as f:
+        return json.load(f)
+
 df = load_data()
+geojson = load_geojson()
 
-st.write(f"Loaded {len(df):,} earthquake records.")
-
-# Map with points colored by Magnitude
 fig = px.scatter_mapbox(
     df,
     lat="Latitude",
@@ -27,6 +28,14 @@ fig = px.scatter_mapbox(
     size_max=15,
     zoom=1,
     mapbox_style="open-street-map"
+)
+
+fig.update_layout(
+    geojson=geojson,
+    geo=dict(
+        visible=False,
+        lakecolor="rgb(255, 255, 255)"
+    )
 )
 
 st.plotly_chart(fig, use_container_width=True)
