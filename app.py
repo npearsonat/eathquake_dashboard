@@ -1,46 +1,43 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import json
-import plotly.graph_objects as go
 
-@st.cache_data
-def load_data():
-    df = pd.read_csv("data/database.csv")
-    df['Datetime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='coerce')
-    return df
+# Streamlit page setup
+st.set_page_config(layout="wide")
+st.title("Global Earthquake Map")
 
-def load_geojson():
-    with open("data/PB2002_boundaries.json") as f:
-        return json.load(f)
+# Load your earthquake data
+# Replace with your actual data path
+df = pd.read_csv("data/earthquakes.csv")
 
-df = load_data()
-geojson = load_geojson()
+# Make sure column names match exactly
+df.rename(columns=lambda x: x.lower(), inplace=True)
 
+# Drop rows with missing lat/lon or magnitude
+df = df.dropna(subset=['latitude', 'longitude', 'magnitude'])
+
+# Show world map with quakes
 fig = px.scatter_mapbox(
     df,
-    lat='Latitude',
-    lon='Longitude',
-    size='Magnitude',
-    color='Magnitude',
-    color_continuous_scale='Viridis',
-    size_max=15,
-    zoom=1,
-    mapbox_style="open-street-map"
+    lat="latitude",
+    lon="longitude",
+    size="magnitude",
+    color="magnitude",
+    size_max=30,
+    zoom=0,
+    mapbox_style="carto-darkmatter",  # Dark background for visual contrast
+    color_continuous_scale="gray",    # Darker = stronger
+    opacity=0.8,
+    hover_name="magnitude"
 )
 
-# Add tectonic plate boundaries as lines from geojson
-for feature in geojson['features']:
-    if feature['geometry']['type'] == 'LineString':
-        lons, lats = zip(*feature['geometry']['coordinates'])
-        fig.add_trace(go.Scattermapbox(
-            lon=lons,
-            lat=lats,
-            mode='lines',
-            line=dict(color='red', width=2),
-            name='Tectonic Plate Boundary'
-        ))
+fig.update_layout(
+    margin=dict(l=0, r=0, t=0, b=0),
+    coloraxis_colorbar=dict(
+        title="Magnitude",
+        tickvals=[4, 5, 6, 7]
+    )
+)
 
-fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-
+# Show the figure
 st.plotly_chart(fig, use_container_width=True)
