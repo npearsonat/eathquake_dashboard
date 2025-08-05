@@ -6,7 +6,7 @@ st.set_page_config(layout="wide")
 st.title("Global Earthquake Map")
 
 # Load earthquake data
-df = pd.read_csv("data/earthquakes.csv")
+df = pd.read_csv("data/database.csv")
 df.rename(columns=lambda x: x.lower(), inplace=True)
 df = df.dropna(subset=['latitude', 'longitude', 'magnitude'])
 
