@@ -8,7 +8,7 @@ st.title("Global Earthquake Map")
 
 # Load your earthquake data
 # Replace with your actual data path
-df = pd.read_csv("data/earthquakes.csv")
+df = pd.read_csv("data/database.csv")
 
 # Make sure column names match exactly
 df.rename(columns=lambda x: x.lower(), inplace=True)
