@@ -6,7 +6,7 @@ st.title("Earthquake Data Explorer")
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("global_disaster_dashboard/data/database.csv")
+    df = pd.read_csv("data/database.csv")
     df['Datetime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='coerce')
     return df
 
