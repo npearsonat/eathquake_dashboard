@@ -187,7 +187,7 @@ try:
             hist_fig = px.histogram(
                 filtered_df, 
                 x="Magnitude", 
-                bins=20,
+                nbins=20,
                 title="Frequency by Magnitude",
                 color_discrete_sequence=["#ff6b6b"]
             )
