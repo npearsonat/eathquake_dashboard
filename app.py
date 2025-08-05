@@ -20,7 +20,7 @@ fig = px.scatter_mapbox(
     color="Magnitude",
     zoom=.5,
     height=600,
-    mapbox_style="open-street-map"  
+    mapbox_style="carto-positron"  
 )
 
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
