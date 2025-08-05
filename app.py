@@ -10,7 +10,7 @@ def load_data():
     return df
 
 def load_geojson():
-    with open("data/tectonic_boundaries.json") as f:
+    with open("data/PB2002_boundaries.json") as f:
         return json.load(f)
 
 df = load_data()
