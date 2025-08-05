@@ -208,14 +208,6 @@ try:
                 box_fig.update_layout(height=400)
                 box_fig.update_layout(xaxis_tickangle=45)
                 st.plotly_chart(box_fig, use_container_width=True)
-        
-        # Show recent high-magnitude earthquakes
-        st.subheader("Highest Magnitude Earthquakes")
-        top_earthquakes = filtered_df.nlargest(10, 'Magnitude')[['Magnitude', 'Latitude', 'Longitude']]
-        if 'DateTime' in filtered_df.columns:
-            top_earthquakes = filtered_df.nlargest(10, 'Magnitude')[['DateTime', 'Magnitude', 'Latitude', 'Longitude']]
-        
-        st.dataframe(top_earthquakes, use_container_width=True)
 
 except FileNotFoundError:
     st.error("🚫 Could not find 'data/database.csv'. Please make sure the file exists in the correct location.")
