@@ -1,3 +1,5 @@
 streamlit
 pandas
 requests
+plotly>=5.15.0
+
