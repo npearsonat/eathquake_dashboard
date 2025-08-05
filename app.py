@@ -159,10 +159,10 @@ try:
         fig.update_layout(
             margin={"r":0,"t":50,"l":0,"b":0},
             coloraxis_colorbar=dict(
-                title="Magnitude",
-                titleside="right",
+                title=dict(text="Magnitude", side="right"),
                 thickness=15,
-                len=0.7
+                len=0.7,
+                x=1.02
             ),
             font=dict(size=12)
         )
