@@ -205,7 +205,7 @@ try:
                     title="Magnitude Distribution Over Time"
                 )
                 box_fig.update_layout(height=400)
-                box_fig.update_xaxis(tickangle=45)
+                box_fig.update_layout(xaxis_tickangle=45)
                 st.plotly_chart(box_fig, use_container_width=True)
         
         # Show recent high-magnitude earthquakes
