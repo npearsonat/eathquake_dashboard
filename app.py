@@ -98,8 +98,6 @@ if page == "🌍 Global Map":
     st.title("🌍 Global Earthquake Dashboard")
     st.markdown("**Real-time visualization of earthquake activity worldwide**")
 
-if page == "🌍 Global Map":
-
 try:
     df = load_data()
     
