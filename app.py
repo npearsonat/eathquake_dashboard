@@ -16,7 +16,7 @@ fig = px.scatter_mapbox(
     lon="Longitude",        
     size="Magnitude",
     color="Magnitude",
-    zoom=2,
+    zoom=.5,
     height=600,
     mapbox_style="open-street-map"  
 )
