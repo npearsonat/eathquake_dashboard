@@ -7,7 +7,7 @@ import plotly.express as px
 df = pd.read_csv("data/database.csv")
 
 # Base size for magnitude 5 (smallest you want)
-base_size = 4
+base_size = 1
 df["size"] = base_size * (2 ** (df["Magnitude"] - 5))
 df["size"] = df["size"].clip(lower=base_size)
 
