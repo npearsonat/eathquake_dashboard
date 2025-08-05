@@ -17,26 +17,30 @@ def load_geojson():
 df = load_data()
 geojson = load_geojson()
 
-fig.update_layout(
-    mapbox_style="open-street-map",
-    mapbox_zoom=1,
-    mapbox_center={"lat": 0, "lon": 0},
-    margin={"r":0,"t":0,"l":0,"b":0}
+fig = px.scatter_mapbox(
+    df,
+    lat='Latitude',
+    lon='Longitude',
+    size='Magnitude',
+    color='Magnitude',
+    color_continuous_scale='Viridis',
+    size_max=15,
+    zoom=1,
+    mapbox_style="open-street-map"
 )
 
-# Add the tectonic plate boundaries as a Scattermapbox trace
+# Add tectonic plate boundaries as lines from geojson
 for feature in geojson['features']:
-    coords = feature['geometry']['coordinates']
-    # Flatten coords if they are nested (LineStrings)
     if feature['geometry']['type'] == 'LineString':
-        lons, lats = zip(*coords)
+        lons, lats = zip(*feature['geometry']['coordinates'])
         fig.add_trace(go.Scattermapbox(
             lon=lons,
             lat=lats,
             mode='lines',
-            line=dict(width=2, color='red'),
-            name='Tectonic Boundary'
+            line=dict(color='red', width=2),
+            name='Tectonic Plate Boundary'
         ))
-    # You can add support for MultiLineString if needed
+
+fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
 st.plotly_chart(fig, use_container_width=True)
