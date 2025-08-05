@@ -16,7 +16,6 @@ fig = px.scatter_mapbox(
     lon="Longitude",        # capitalized
     size="Magnitude",
     color="Magnitude",
-    hover_name="Place",     # update this too if "Place" isn't in df.columns
     zoom=1,
     height=600,
     mapbox_style="carto-positron"  # no token needed
