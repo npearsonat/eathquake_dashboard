@@ -18,7 +18,7 @@ fig = px.scatter_mapbox(
     color="Magnitude",
     zoom=1,
     height=600,
-    mapbox_style="carto-positron"  # no token needed
+    mapbox_style="stamen-terrain"  # no token needed
 )
 
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
