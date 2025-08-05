@@ -94,6 +94,7 @@ def assign_countries(df):
     return df
 
 if page == "🌍 Global Map":
+    pass
 
 try:
     df = load_data()
