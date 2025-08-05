@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import json
+import plotly.graph_objects as go
 
 @st.cache_data
 def load_data():
@@ -16,26 +17,26 @@ def load_geojson():
 df = load_data()
 geojson = load_geojson()
 
-fig = px.scatter_mapbox(
-    df,
-    lat="Latitude",
-    lon="Longitude",
-    color="Magnitude",
-    size="Magnitude",
-    hover_name="Date",
-    hover_data=["Magnitude", "Depth"],
-    color_continuous_scale="Viridis",
-    size_max=15,
-    zoom=1,
-    mapbox_style="open-street-map"
+fig.update_layout(
+    mapbox_style="open-street-map",
+    mapbox_zoom=1,
+    mapbox_center={"lat": 0, "lon": 0},
+    margin={"r":0,"t":0,"l":0,"b":0}
 )
 
-fig.update_layout(
-    geojson=geojson,
-    geo=dict(
-        visible=False,
-        lakecolor="rgb(255, 255, 255)"
-    )
-)
+# Add the tectonic plate boundaries as a Scattermapbox trace
+for feature in geojson['features']:
+    coords = feature['geometry']['coordinates']
+    # Flatten coords if they are nested (LineStrings)
+    if feature['geometry']['type'] == 'LineString':
+        lons, lats = zip(*coords)
+        fig.add_trace(go.Scattermapbox(
+            lon=lons,
+            lat=lats,
+            mode='lines',
+            line=dict(width=2, color='red'),
+            name='Tectonic Boundary'
+        ))
+    # You can add support for MultiLineString if needed
 
 st.plotly_chart(fig, use_container_width=True)
