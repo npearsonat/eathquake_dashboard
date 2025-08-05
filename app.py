@@ -12,15 +12,14 @@ df["size"] = df["Magnitude"] ** 2  # Adjust this if sizes are too big
 # Create the map
 fig = px.scatter_mapbox(
     df,
-    lat="latitude",
-    lon="longitude",
-    size="size",
+    lat="Latitude",         # capitalized
+    lon="Longitude",        # capitalized
+    size="Magnitude",
     color="Magnitude",
-    color_continuous_scale="YlOrRd",
-    hover_name="place" if "place" in df.columns else None,
+    hover_name="Place",     # update this too if "Place" isn't in df.columns
     zoom=1,
-    height=700,
-    mapbox_style="carto-positron"  # No token needed
+    height=600,
+    mapbox_style="carto-positron"  # no token needed
 )
 
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
