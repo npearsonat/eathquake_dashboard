@@ -202,7 +202,8 @@ try:
                     filtered_df, 
                     x="Month", 
                     y="Magnitude",
-                    title="Magnitude Distribution Over Time"
+                    title="Magnitude Distribution Over Time",
+                    color_discrete_sequence=['#ff0000']
                 )
                 box_fig.update_layout(height=400)
                 box_fig.update_layout(xaxis_tickangle=45)
