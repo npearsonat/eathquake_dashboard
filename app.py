@@ -1,9 +1,32 @@
 import streamlit as st
+import pandas as pd
+import plotly.express as px
 
-st.set_page_config(page_title="Global Disaster Tracker", layout="wide")
+st.title("Earthquake Data Explorer")
 
-st.title("🌍 Global Disaster Tracker")
-st.markdown("Track natural disasters around the world using public data.")
+@st.cache_data
+def load_data():
+    df = pd.read_csv("global_disaster_dashboard/data/database.csv")
+    df['Datetime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='coerce')
+    return df
 
-st.info("This is a prototype. Visualizations will be added soon.")
+df = load_data()
 
+st.write(f"Loaded {len(df):,} earthquake records.")
+
+# Map with points colored by Magnitude
+fig = px.scatter_mapbox(
+    df,
+    lat="Latitude",
+    lon="Longitude",
+    color="Magnitude",
+    size="Magnitude",
+    hover_name="Date",
+    hover_data=["Magnitude", "Depth"],
+    color_continuous_scale="Viridis",
+    size_max=15,
+    zoom=1,
+    mapbox_style="open-street-map"
+)
+
+st.plotly_chart(fig, use_container_width=True)
