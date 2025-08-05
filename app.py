@@ -7,7 +7,7 @@ import plotly.express as px
 df = pd.read_csv("data/database.csv")
 
 # Adjust magnitude scaling (smaller bubbles for small quakes)
-df["size"] = df["magnitude"] ** 2  # Adjust this if sizes are too big
+df["size"] = df["Magnitude"] ** 2  # Adjust this if sizes are too big
 
 # Create the map
 fig = px.scatter_mapbox(
