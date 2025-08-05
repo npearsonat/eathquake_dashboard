@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 # Title and description
-st.title("🌍 Global Earthquake Dashboard")
+st.title("Global Earthquake Dashboard")
 st.markdown("**Real-time visualization of earthquake activity worldwide**")
 
 # Load earthquake data
@@ -47,14 +47,14 @@ try:
     df = load_data()
     
     # Sidebar controls
-    st.sidebar.header("🎛️ Controls")
+    st.sidebar.header(" Controls")
     
     # Time range slider
     if not df.empty and 'DateTime' in df.columns:
         min_date = df['DateTime'].min().date()
         max_date = df['DateTime'].max().date()
         
-        st.sidebar.subheader("📅 Time Range")
+        st.sidebar.subheader("Time Range")
         date_range = st.sidebar.date_input(
             "Select date range:",
             value=(min_date, max_date),
@@ -69,7 +69,7 @@ try:
             start_date = end_date = date_range
     
     # Magnitude filter
-    st.sidebar.subheader("📊 Magnitude Range")
+    st.sidebar.subheader("Magnitude Range")
     min_mag = float(df['Magnitude'].min())
     max_mag = float(df['Magnitude'].max())
     
@@ -178,7 +178,7 @@ try:
         st.plotly_chart(fig, use_container_width=True)
         
         # Additional insights
-        st.subheader("📈 Magnitude Distribution")
+        st.subheader("Magnitude Distribution")
         
         col1, col2 = st.columns(2)
         
@@ -209,7 +209,7 @@ try:
                 st.plotly_chart(box_fig, use_container_width=True)
         
         # Show recent high-magnitude earthquakes
-        st.subheader("🚨 Highest Magnitude Earthquakes")
+        st.subheader("Highest Magnitude Earthquakes")
         top_earthquakes = filtered_df.nlargest(10, 'Magnitude')[['Magnitude', 'Latitude', 'Longitude']]
         if 'DateTime' in filtered_df.columns:
             top_earthquakes = filtered_df.nlargest(10, 'Magnitude')[['DateTime', 'Magnitude', 'Latitude', 'Longitude']]
