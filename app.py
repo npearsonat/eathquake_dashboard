@@ -18,14 +18,13 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    body {
+    .stApp {
         background-color: #ffecec;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
-
 
 # Load earthquake data
 @st.cache_data
