@@ -360,7 +360,7 @@ try:
                     """.format(highest_risk_country), unsafe_allow_html=True)
 
             # Min Magnitude
-            min_magnitude = filtered_df['Magnitude'].min()
+            #min_magnitude = filtered_df['Magnitude'].min()
             # Country Stats
             country_stats = (
                 gdf.groupby(['ISO_Code', 'Country'])
