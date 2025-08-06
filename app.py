@@ -97,8 +97,8 @@ try:
     
     if page == "Global Earthquake Map":
         # Title and description
-        st.header("Global Earthquake Analysis")
-        st.markdown("**Visualization of earthquake activity worldwide**")
+        st.header("Global lysis")
+        st.markdown("**Visualization of earthquake activity worldwide. Shows earthquake epicenter locations.Higher magnitude quakes represented by larger and darker circles**")
         
         # Magnitude filter
         st.sidebar.subheader("Magnitude Range")
@@ -264,7 +264,7 @@ try:
     
     elif page == "Earthquake Occurrence By Country":
         st.header("Earthquake Analysis by Country")
-        st.markdown("**Country-level earthquake frequency and magnitude analysis**")
+        st.markdown("**Country-level earthquake frequency and magnitude analysis. Quake location attributed using epicenter coordinates**")
         
         # Assign countries to earthquakes
         df_with_countries = assign_countries(df)
