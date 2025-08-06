@@ -21,17 +21,17 @@ st.markdown(
     .stApp {
         background-color: white;
         background-image: repeating-linear-gradient(
-            to bottom,
-            white,
-            white 29px,
-            #ffb3b3 30px,
-            white 31px
+            45deg,               /* diagonal lines */
+            white,               /* base color */
+            white 9px,           /* space between lines */
+            #ffb3b3 10px,        /* 1px line in light red */
+            white 11px           /* reset to white */
         );
-        background-size: 100% 31px;
+        background-size: 100% 100%;
     }
 
     [data-testid="stSidebar"] {
-        background-color: #fff0f0;
+        background-color: #fff5f5;
     }
     </style>
     """,
