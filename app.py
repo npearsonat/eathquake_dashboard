@@ -97,36 +97,35 @@ def assign_countries(df):
     
     return df
 
-# Navigation - MOVED TO TOP LEVEL AND MADE MORE VISIBLE
-st.markdown("---")
+# Main title and navigation
+st.title("🌍 Global Earthquake Dashboard")
 page = st.selectbox("**Choose Analysis View:**", ["Global Map", "By Country"], label_visibility="visible")
-st.markdown("---")
 
 try:
     df = load_data()
     
+    # Year range slider at top for both pages
+    if not df.empty and 'DateTime' in df.columns:
+        min_year = int(df['DateTime'].dt.year.min())
+        max_year = int(df['DateTime'].dt.year.max())
+        
+        st.subheader("📅 Time Range Selection")
+        year_range = st.slider(
+            "Select year range:",
+            min_value=min_year,
+            max_value=max_year,
+            value=(min_year, max_year),
+            step=1
+        )
+        start_year, end_year = year_range
+    
     if page == "Global Map":
         # Title and description
-        st.title("Global Earthquake Dashboard")
+        st.title("Global Earthquake Analysis")
         st.markdown("**Real-time visualization of earthquake activity worldwide**")
         
         # Sidebar controls
         st.sidebar.header("Controls")
-        
-        # Year range slider instead of date picker
-        if not df.empty and 'DateTime' in df.columns:
-            min_year = int(df['DateTime'].dt.year.min())
-            max_year = int(df['DateTime'].dt.year.max())
-            
-            st.sidebar.subheader("Time Range")
-            year_range = st.sidebar.slider(
-                "Select year range:",
-                min_value=min_year,
-                max_value=max_year,
-                value=(min_year, max_year),
-                step=1
-            )
-            start_year, end_year = year_range
         
         # Magnitude filter
         st.sidebar.subheader("Magnitude Range")
@@ -160,9 +159,9 @@ try:
         with col1:
             with st.container():
                 st.markdown("""
-                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
-                    <h3 style="margin: 0; color: #ff6b6b;">Total Earthquakes</h3>
-                    <h2 style="margin: 0; color: #d63384;">{}</h2>
+                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Total Earthquakes</h3>
+                    <h2 style="margin: 0; color: #d63384; text-align: center;">{}</h2>
                 </div>
                 """.format(len(filtered_df)), unsafe_allow_html=True)
         
@@ -170,9 +169,9 @@ try:
             max_mag = f"{filtered_df['Magnitude'].max():.1f}" if not filtered_df.empty else "N/A"
             with st.container():
                 st.markdown("""
-                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
-                    <h3 style="margin: 0; color: #ff6b6b;">Max Magnitude</h3>
-                    <h2 style="margin: 0; color: #d63384;">{}</h2>
+                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Max Magnitude</h3>
+                    <h2 style="margin: 0; color: #d63384; text-align: center;">{}</h2>
                 </div>
                 """.format(max_mag), unsafe_allow_html=True)
         
@@ -180,9 +179,9 @@ try:
             avg_mag = f"{filtered_df['Magnitude'].mean():.1f}" if not filtered_df.empty else "N/A"
             with st.container():
                 st.markdown("""
-                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
-                    <h3 style="margin: 0; color: #ff6b6b;">Avg Magnitude</h3>
-                    <h2 style="margin: 0; color: #d63384;">{}</h2>
+                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Avg Magnitude</h3>
+                    <h2 style="margin: 0; color: #d63384; text-align: center;">{}</h2>
                 </div>
                 """.format(avg_mag), unsafe_allow_html=True)
         
@@ -190,9 +189,9 @@ try:
             major_earthquakes = len(filtered_df[filtered_df['Magnitude'] >= 7.0])
             with st.container():
                 st.markdown("""
-                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
-                    <h3 style="margin: 0; color: #ff6b6b;">Major Quakes (7.0+)</h3>
-                    <h2 style="margin: 0; color: #d63384;">{}</h2>
+                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Major Quakes (7.0+)</h3>
+                    <h2 style="margin: 0; color: #d63384; text-align: center;">{}</h2>
                 </div>
                 """.format(major_earthquakes), unsafe_allow_html=True)
         
@@ -300,38 +299,23 @@ try:
         # Sidebar controls for country analysis
         st.sidebar.header("Country Analysis Controls")
         
-        # Magnitude threshold slider instead of dropdown
+        # Magnitude threshold slider starting at 5.0
         st.sidebar.subheader("Magnitude Range")
         min_magnitude = st.sidebar.slider(
             "Minimum magnitude to display:",
             min_value=0.0,
             max_value=9.0,
-            value=5.0,
+            value=5.0,  # Start at 5.0
             step=0.1,
             help="Higher magnitudes represent exponentially more powerful earthquakes"
         )
         
-        # Year range slider for country analysis
+        # Filter by year range and magnitude
         if 'DateTime' in df_with_countries.columns:
-            min_year = int(df_with_countries['DateTime'].dt.year.min())
-            max_year = int(df_with_countries['DateTime'].dt.year.max())
-            
-            st.sidebar.subheader("Time Range")
-            country_year_range = st.sidebar.slider(
-                "Select year range for analysis:",
-                min_value=min_year,
-                max_value=max_year,
-                value=(min_year, max_year),
-                step=1,
-                key="country_year_range"
-            )
-            
-            country_start_year, country_end_year = country_year_range
-            
             # Filter by date and magnitude
             country_mask = (
-                (df_with_countries['DateTime'].dt.year >= country_start_year) & 
-                (df_with_countries['DateTime'].dt.year <= country_end_year) &
+                (df_with_countries['DateTime'].dt.year >= start_year) & 
+                (df_with_countries['DateTime'].dt.year <= end_year) &
                 (df_with_countries['Magnitude'] >= min_magnitude) &
                 (df_with_countries['Country'] != 'Unknown')
             )
@@ -370,9 +354,9 @@ try:
             with col1:
                 with st.container():
                     st.markdown("""
-                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
-                        <h3 style="margin: 0; color: #ff6b6b;">Countries Analyzed</h3>
-                        <h2 style="margin: 0; color: #d63384;">{}</h2>
+                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Countries Analyzed</h3>
+                        <h2 style="margin: 0; color: #d63384; text-align: center;">{}</h2>
                     </div>
                     """.format(len(country_stats)), unsafe_allow_html=True)
             
@@ -381,9 +365,9 @@ try:
                 top_count = country_stats['Count'].max()
                 with st.container():
                     st.markdown("""
-                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
-                        <h3 style="margin: 0; color: #ff6b6b;">Most Active</h3>
-                        <h2 style="margin: 0; color: #d63384; font-size: 1.2rem;">{} ({})</h2>
+                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Most Active</h3>
+                        <h2 style="margin: 0; color: #d63384; font-size: 1rem; text-align: center;">{} ({})</h2>
                     </div>
                     """.format(top_country, top_count), unsafe_allow_html=True)
             
@@ -392,9 +376,9 @@ try:
                 highest_mag = country_stats['Max_Magnitude'].max()
                 with st.container():
                     st.markdown("""
-                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
-                        <h3 style="margin: 0; color: #ff6b6b;">Highest Magnitude</h3>
-                        <h2 style="margin: 0; color: #d63384; font-size: 1.2rem;">{} ({})</h2>
+                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Highest Magnitude</h3>
+                        <h2 style="margin: 0; color: #d63384; font-size: 1rem; text-align: center;">{} ({})</h2>
                     </div>
                     """.format(highest_mag, highest_mag_country), unsafe_allow_html=True)
             
@@ -402,65 +386,14 @@ try:
                 highest_risk_country = country_stats.loc[country_stats['Risk_Score'].idxmax(), 'Country']
                 with st.container():
                     st.markdown("""
-                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
-                        <h3 style="margin: 0; color: #ff6b6b;">Highest Risk</h3>
-                        <h2 style="margin: 0; color: #d63384; font-size: 1.2rem;">{}</h2>
+                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Highest Risk</h3>
+                        <h2 style="margin: 0; color: #d63384; font-size: 1rem; text-align: center;">{}</h2>
                     </div>
                     """.format(highest_risk_country), unsafe_allow_html=True)
             
-            # Create scatter mapbox similar to first page
-            st.markdown("### 🌍 Country-Level Earthquake Map")
-            
-            # Create enhanced scatter map similar to page 1
-            base_size = 3
-            country_filtered_df["size"] = base_size * (3 ** (country_filtered_df["Magnitude"] - min_magnitude))
-            max_size = 100
-            country_filtered_df["size"] = country_filtered_df["size"].clip(upper=max_size)
-            
-            # Create the map similar to first page
-            country_map_fig = px.scatter_mapbox(
-                country_filtered_df,
-                lat="Latitude",       
-                lon="Longitude",        
-                size="size",
-                color="Magnitude",
-                hover_name="Country",
-                hover_data={
-                    "Magnitude": ":.1f",
-                    "Country": True,
-                    "Latitude": ":.2f", 
-                    "Longitude": ":.2f",
-                    "size": False
-                },
-                color_continuous_scale="Reds",
-                zoom=1,
-                height=700,
-                mapbox_style="carto-positron",
-                title="Global Earthquake Distribution by Country"
-            )
-            
-            # Update layout similar to first page
-            country_map_fig.update_layout(
-                margin={"r":0,"t":50,"l":0,"b":0},
-                coloraxis_colorbar=dict(
-                    title=dict(text="Magnitude", side="right"),
-                    thickness=15,
-                    len=0.7,
-                    x=1.02
-                ),
-                font=dict(size=12)
-            )
-            
-            # Update traces for better visibility
-            country_map_fig.update_traces(
-                marker=dict(
-                    opacity=0.7
-                )
-            )
-            
-            st.plotly_chart(country_map_fig, use_container_width=True)
-            
-            # Create choropleth map
+            # Create choropleth map with improved styling similar to first page
+            # Map country names to ISO codes for choropleth
             # Map country names to ISO codes for choropleth
             country_iso_mapping = {
                 'United States': 'USA', 'Japan': 'JPN', 'Indonesia': 'IDN', 
@@ -480,7 +413,7 @@ try:
             tab1, tab2, tab3 = st.tabs(["Country Frequency Map", "Rankings", "Detailed Analysis"])
             
             with tab1:
-                # Choropleth map showing earthquake frequency by country
+                # Choropleth map showing earthquake frequency by country with improved styling
                 choropleth_fig = px.choropleth(
                     country_stats,
                     locations='ISO_Code',
@@ -497,9 +430,25 @@ try:
                     labels={'Count': 'Number of Earthquakes'}
                 )
                 
+                # Update layout with similar styling to first page
                 choropleth_fig.update_layout(
-                    height=600,
-                    geo=dict(showframe=False, showcoastlines=True)
+                    height=700,
+                    margin={"r":0,"t":50,"l":0,"b":0},
+                    geo=dict(
+                        showframe=False, 
+                        showcoastlines=True,
+                        bgcolor='rgba(0,0,0,0)',
+                        lakecolor='lightblue',
+                        landcolor='lightgray',
+                        coastlinecolor='darkgray'
+                    ),
+                    coloraxis_colorbar=dict(
+                        title=dict(text="Earthquake Count", side="right"),
+                        thickness=15,
+                        len=0.7,
+                        x=1.02
+                    ),
+                    font=dict(size=12)
                 )
                 
                 st.plotly_chart(choropleth_fig, use_container_width=True)
