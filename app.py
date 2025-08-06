@@ -140,7 +140,7 @@ try:
             min_value=min_mag,
             max_value=max_mag,
             value=min_mag,
-            step=0.1,
+            step=0.5,
             help="Higher magnitudes represent exponentially more powerful earthquakes"
         )
         
@@ -298,9 +298,6 @@ try:
         
         # Assign countries to earthquakes
         df_with_countries = assign_countries(df)
-        
-        # Sidebar controls for country analysis
-        st.sidebar.header("🎛️ Country Analysis Controls")
         
         # Magnitude threshold slider starting at 5.0
         st.sidebar.subheader("Magnitude Range")
