@@ -359,15 +359,7 @@ try:
                     </div>
                     """.format(highest_risk_country), unsafe_allow_html=True)
 
-            # Min Magnitude
-            min_magnitude = st.sidebar.slider(
-                "Minimum magnitude to display:",
-                min_value=float(df['Magnitude'].min()),
-                max_value=float(df['Magnitude'].max()),
-                value=float(df['Magnitude'].min()),
-                step=0.1
-            )
-
+            # Gdf Def
             gdf = assign_countries(df)
             # Country Stats
             country_stats = (
