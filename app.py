@@ -72,10 +72,10 @@ def assign_countries(df):
 
 # Main title and navigation
 st.title("Global Earthquake Dashboard")
-st.markdown("*Comprehensive analysis and visualization of seismic activity worldwide  \n
-Significant Earthquakes, 1965-2016. Source: https://www.kaggle.com/datasets/usgs/earthquake-database"  \n
+st.markdown("""Comprehensive analysis and visualization of seismic activity worldwide  \n
+Significant Earthquakes, 1965-2016. Source: https://www.kaggle.com/datasets/usgs/earthquake-database  \n
 The National Earthquake Information Center (NEIC) a national datacenter for earthquakes. Compiles data  \n
-from scientists from all over the world through cooperative agreements and seismograph networks.*)
+from scientists from all over the world through cooperative agreements and seismograph networks.""")
 
 page = st.selectbox("**Choose Analysis View:**", ["Global Earthquake Map", "Earthquake Occurrence By Country"], label_visibility="visible")
 
