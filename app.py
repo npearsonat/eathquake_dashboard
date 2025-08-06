@@ -74,7 +74,15 @@ def assign_countries(df):
         'Papua New Guinea': {'lat': (-12, -1), 'lon': (140, 157)},
         'Ecuador': {'lat': (-5, 2), 'lon': (-92, -75)},
         'Guatemala': {'lat': (13, 18), 'lon': (-93, -88)},
-        'Costa Rica': {'lat': (8, 11), 'lon': (-86, -82)}
+        'Costa Rica': {'lat': (8, 11), 'lon': (-86, -82)},
+        'Australia': {'lat': (-44, -10), 'lon': (113, 154)},
+        'South Africa': {'lat': (-35, -22), 'lon': (16, 33)},
+        'Morocco': {'lat': (27, 36), 'lon': (-13, -1)},
+        'Algeria': {'lat': (19, 37), 'lon': (-9, 12)},
+        'Ethiopia': {'lat': (3, 15), 'lon': (33, 48)},
+        'Kenya': {'lat': (-5, 5), 'lon': (34, 42)},
+        'Tanzania': {'lat': (-12, -1), 'lon': (29, 41)},
+        'Madagascar': {'lat': (-26, -12), 'lon': (43, 51)}
     }
     
     # Assign countries based on coordinate ranges
@@ -89,38 +97,36 @@ def assign_countries(df):
     
     return df
 
-# Navigation - MOVED TO TOP LEVEL
-page = st.sidebar.selectbox("Choose Page", ["🌍 Global Map", "🗺️ By Country"])
+# Navigation - MOVED TO TOP LEVEL AND MADE MORE VISIBLE
+st.markdown("---")
+page = st.selectbox("**Choose Analysis View:**", ["Global Map", "By Country"], label_visibility="visible")
+st.markdown("---")
 
 try:
     df = load_data()
     
-    if page == "🌍 Global Map":
+    if page == "Global Map":
         # Title and description
-        st.title("🌍 Global Earthquake Dashboard")
+        st.title("Global Earthquake Dashboard")
         st.markdown("**Real-time visualization of earthquake activity worldwide**")
         
         # Sidebar controls
-        st.sidebar.header(" Controls")
+        st.sidebar.header("Controls")
         
-        # Time range slider
+        # Year range slider instead of date picker
         if not df.empty and 'DateTime' in df.columns:
-            min_date = df['DateTime'].min().date()
-            max_date = df['DateTime'].max().date()
+            min_year = int(df['DateTime'].dt.year.min())
+            max_year = int(df['DateTime'].dt.year.max())
             
             st.sidebar.subheader("Time Range")
-            date_range = st.sidebar.date_input(
-                "Select date range:",
-                value=(min_date, max_date),
-                min_value=min_date,
-                max_value=max_date
+            year_range = st.sidebar.slider(
+                "Select year range:",
+                min_value=min_year,
+                max_value=max_year,
+                value=(min_year, max_year),
+                step=1
             )
-            
-            # Handle single date selection
-            if isinstance(date_range, tuple) and len(date_range) == 2:
-                start_date, end_date = date_range
-            else:
-                start_date = end_date = date_range
+            start_year, end_year = year_range
         
         # Magnitude filter
         st.sidebar.subheader("Magnitude Range")
@@ -139,35 +145,56 @@ try:
         # Filter data based on selections
         if 'DateTime' in df.columns:
             mask = (
-                (df['DateTime'].dt.date >= start_date) & 
-                (df['DateTime'].dt.date <= end_date) &
+                (df['DateTime'].dt.year >= start_year) & 
+                (df['DateTime'].dt.year <= end_year) &
                 (df['Magnitude'] >= magnitude_range)
             )
             filtered_df = df[mask].copy()
         else:
             filtered_df = df[df['Magnitude'] >= magnitude_range].copy()
         
-        # Display statistics
+        # Display statistics in boxes
+        st.markdown("### 📊 Summary Statistics")
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            st.metric("Total Earthquakes", len(filtered_df))
+            with st.container():
+                st.markdown("""
+                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
+                    <h3 style="margin: 0; color: #ff6b6b;">Total Earthquakes</h3>
+                    <h2 style="margin: 0; color: #d63384;">{}</h2>
+                </div>
+                """.format(len(filtered_df)), unsafe_allow_html=True)
         
         with col2:
-            if not filtered_df.empty:
-                st.metric("Max Magnitude", f"{filtered_df['Magnitude'].max():.1f}")
-            else:
-                st.metric("Max Magnitude", "N/A")
+            max_mag = f"{filtered_df['Magnitude'].max():.1f}" if not filtered_df.empty else "N/A"
+            with st.container():
+                st.markdown("""
+                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
+                    <h3 style="margin: 0; color: #ff6b6b;">Max Magnitude</h3>
+                    <h2 style="margin: 0; color: #d63384;">{}</h2>
+                </div>
+                """.format(max_mag), unsafe_allow_html=True)
         
         with col3:
-            if not filtered_df.empty:
-                st.metric("Avg Magnitude", f"{filtered_df['Magnitude'].mean():.1f}")
-            else:
-                st.metric("Avg Magnitude", "N/A")
+            avg_mag = f"{filtered_df['Magnitude'].mean():.1f}" if not filtered_df.empty else "N/A"
+            with st.container():
+                st.markdown("""
+                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
+                    <h3 style="margin: 0; color: #ff6b6b;">Avg Magnitude</h3>
+                    <h2 style="margin: 0; color: #d63384;">{}</h2>
+                </div>
+                """.format(avg_mag), unsafe_allow_html=True)
         
         with col4:
             major_earthquakes = len(filtered_df[filtered_df['Magnitude'] >= 7.0])
-            st.metric("Major Quakes (7.0+)", major_earthquakes)
+            with st.container():
+                st.markdown("""
+                <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
+                    <h3 style="margin: 0; color: #ff6b6b;">Major Quakes (7.0+)</h3>
+                    <h2 style="margin: 0; color: #d63384;">{}</h2>
+                </div>
+                """.format(major_earthquakes), unsafe_allow_html=True)
         
         if filtered_df.empty:
             st.warning("No earthquakes found for the selected criteria. Try adjusting your filters.")
@@ -263,60 +290,48 @@ try:
                     box_fig.update_layout(xaxis_tickangle=45)
                     st.plotly_chart(box_fig, use_container_width=True)
     
-    elif page == "🗺️ By Country":
-        st.title("🗺️ Earthquake Analysis by Country")
+    elif page == "By Country":
+        st.title("Earthquake Analysis by Country")
         st.markdown("**Country-level earthquake frequency and magnitude analysis**")
         
         # Assign countries to earthquakes
         df_with_countries = assign_countries(df)
         
         # Sidebar controls for country analysis
-        st.sidebar.header("🎛️ Country Analysis Controls")
+        st.sidebar.header("Country Analysis Controls")
         
-        # Magnitude threshold for analysis
-        st.sidebar.subheader("📊 Magnitude Categories")
-        magnitude_categories = {
-            "All Earthquakes": 0.0,
-            "Minor (4.0+)": 4.0,
-            "Light (5.0+)": 5.0,
-            "Moderate (6.0+)": 6.0,
-            "Strong (7.0+)": 7.0,
-            "Major (8.0+)": 8.0
-        }
-        
-        selected_category = st.sidebar.selectbox(
-            "Select earthquake category:",
-            list(magnitude_categories.keys()),
-            index=2,  # Default to "Light (5.0+)"
-            help="Higher magnitude thresholds show only more significant earthquakes"
+        # Magnitude threshold slider instead of dropdown
+        st.sidebar.subheader("Magnitude Range")
+        min_magnitude = st.sidebar.slider(
+            "Minimum magnitude to display:",
+            min_value=0.0,
+            max_value=9.0,
+            value=5.0,
+            step=0.1,
+            help="Higher magnitudes represent exponentially more powerful earthquakes"
         )
         
-        min_magnitude = magnitude_categories[selected_category]
-        
-        # Time range for country analysis
+        # Year range slider for country analysis
         if 'DateTime' in df_with_countries.columns:
-            min_date = df_with_countries['DateTime'].min().date()
-            max_date = df_with_countries['DateTime'].max().date()
+            min_year = int(df_with_countries['DateTime'].dt.year.min())
+            max_year = int(df_with_countries['DateTime'].dt.year.max())
             
-            st.sidebar.subheader("📅 Time Range")
-            country_date_range = st.sidebar.date_input(
-                "Select date range for analysis:",
-                value=(min_date, max_date),
-                min_value=min_date,
-                max_value=max_date,
-                key="country_date_range"
+            st.sidebar.subheader("Time Range")
+            country_year_range = st.sidebar.slider(
+                "Select year range for analysis:",
+                min_value=min_year,
+                max_value=max_year,
+                value=(min_year, max_year),
+                step=1,
+                key="country_year_range"
             )
             
-            # Handle single date selection
-            if isinstance(country_date_range, tuple) and len(country_date_range) == 2:
-                country_start_date, country_end_date = country_date_range
-            else:
-                country_start_date = country_end_date = country_date_range
+            country_start_year, country_end_year = country_year_range
             
             # Filter by date and magnitude
             country_mask = (
-                (df_with_countries['DateTime'].dt.date >= country_start_date) & 
-                (df_with_countries['DateTime'].dt.date <= country_end_date) &
+                (df_with_countries['DateTime'].dt.year >= country_start_year) & 
+                (df_with_countries['DateTime'].dt.year <= country_end_year) &
                 (df_with_countries['Magnitude'] >= min_magnitude) &
                 (df_with_countries['Country'] != 'Unknown')
             )
@@ -348,25 +363,102 @@ try:
                 country_stats['Max_Magnitude'] * 5
             )
             
-            # Display top-level metrics
+            # Display top-level metrics in styled boxes
+            st.markdown("### 📊 Country Analysis Summary")
             col1, col2, col3, col4 = st.columns(4)
             
             with col1:
-                st.metric("Countries Analyzed", len(country_stats))
+                with st.container():
+                    st.markdown("""
+                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
+                        <h3 style="margin: 0; color: #ff6b6b;">Countries Analyzed</h3>
+                        <h2 style="margin: 0; color: #d63384;">{}</h2>
+                    </div>
+                    """.format(len(country_stats)), unsafe_allow_html=True)
             
             with col2:
                 top_country = country_stats.loc[country_stats['Count'].idxmax(), 'Country']
                 top_count = country_stats['Count'].max()
-                st.metric("Most Active Country", f"{top_country} ({top_count})")
+                with st.container():
+                    st.markdown("""
+                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
+                        <h3 style="margin: 0; color: #ff6b6b;">Most Active</h3>
+                        <h2 style="margin: 0; color: #d63384; font-size: 1.2rem;">{} ({})</h2>
+                    </div>
+                    """.format(top_country, top_count), unsafe_allow_html=True)
             
             with col3:
                 highest_mag_country = country_stats.loc[country_stats['Max_Magnitude'].idxmax(), 'Country']
                 highest_mag = country_stats['Max_Magnitude'].max()
-                st.metric("Highest Magnitude", f"{highest_mag} ({highest_mag_country})")
+                with st.container():
+                    st.markdown("""
+                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
+                        <h3 style="margin: 0; color: #ff6b6b;">Highest Magnitude</h3>
+                        <h2 style="margin: 0; color: #d63384; font-size: 1.2rem;">{} ({})</h2>
+                    </div>
+                    """.format(highest_mag, highest_mag_country), unsafe_allow_html=True)
             
             with col4:
                 highest_risk_country = country_stats.loc[country_stats['Risk_Score'].idxmax(), 'Country']
-                st.metric("Highest Risk Country", highest_risk_country)
+                with st.container():
+                    st.markdown("""
+                    <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5;">
+                        <h3 style="margin: 0; color: #ff6b6b;">Highest Risk</h3>
+                        <h2 style="margin: 0; color: #d63384; font-size: 1.2rem;">{}</h2>
+                    </div>
+                    """.format(highest_risk_country), unsafe_allow_html=True)
+            
+            # Create scatter mapbox similar to first page
+            st.markdown("### 🌍 Country-Level Earthquake Map")
+            
+            # Create enhanced scatter map similar to page 1
+            base_size = 3
+            country_filtered_df["size"] = base_size * (3 ** (country_filtered_df["Magnitude"] - min_magnitude))
+            max_size = 100
+            country_filtered_df["size"] = country_filtered_df["size"].clip(upper=max_size)
+            
+            # Create the map similar to first page
+            country_map_fig = px.scatter_mapbox(
+                country_filtered_df,
+                lat="Latitude",       
+                lon="Longitude",        
+                size="size",
+                color="Magnitude",
+                hover_name="Country",
+                hover_data={
+                    "Magnitude": ":.1f",
+                    "Country": True,
+                    "Latitude": ":.2f", 
+                    "Longitude": ":.2f",
+                    "size": False
+                },
+                color_continuous_scale="Reds",
+                zoom=1,
+                height=700,
+                mapbox_style="carto-positron",
+                title="Global Earthquake Distribution by Country"
+            )
+            
+            # Update layout similar to first page
+            country_map_fig.update_layout(
+                margin={"r":0,"t":50,"l":0,"b":0},
+                coloraxis_colorbar=dict(
+                    title=dict(text="Magnitude", side="right"),
+                    thickness=15,
+                    len=0.7,
+                    x=1.02
+                ),
+                font=dict(size=12)
+            )
+            
+            # Update traces for better visibility
+            country_map_fig.update_traces(
+                marker=dict(
+                    opacity=0.7
+                )
+            )
+            
+            st.plotly_chart(country_map_fig, use_container_width=True)
             
             # Create choropleth map
             # Map country names to ISO codes for choropleth
@@ -376,13 +468,16 @@ try:
                 'Peru': 'PER', 'Greece': 'GRC', 'Italy': 'ITA', 'Philippines': 'PHL',
                 'New Zealand': 'NZL', 'China': 'CHN', 'India': 'IND', 
                 'Afghanistan': 'AFG', 'Russia': 'RUS', 'Papua New Guinea': 'PNG',
-                'Ecuador': 'ECU', 'Guatemala': 'GTM', 'Costa Rica': 'CRI'
+                'Ecuador': 'ECU', 'Guatemala': 'GTM', 'Costa Rica': 'CRI',
+                'Australia': 'AUS', 'South Africa': 'ZAF', 'Morocco': 'MAR',
+                'Algeria': 'DZA', 'Ethiopia': 'ETH', 'Kenya': 'KEN',
+                'Tanzania': 'TZA', 'Madagascar': 'MDG'
             }
             
             country_stats['ISO_Code'] = country_stats['Country'].map(country_iso_mapping)
             
-            # Create tabs for different visualizations
-            tab1, tab2, tab3 = st.tabs(["🗺️ Country Frequency Map", "📊 Rankings", "📈 Detailed Analysis"])
+            # Create tabs for additional analysis
+            tab1, tab2, tab3 = st.tabs(["Country Frequency Map", "Rankings", "Detailed Analysis"])
             
             with tab1:
                 # Choropleth map showing earthquake frequency by country
@@ -398,7 +493,7 @@ try:
                         'ISO_Code': False
                     },
                     color_continuous_scale='Reds',
-                    title=f"Earthquake Frequency by Country ({selected_category})",
+                    title=f"Earthquake Frequency by Country (Magnitude {min_magnitude:.1f}+)",
                     labels={'Count': 'Number of Earthquakes'}
                 )
                 
