@@ -99,18 +99,21 @@ def assign_countries(df):
 
 # Main title and navigation
 st.title("🌍 Global Earthquake Dashboard")
-page = st.selectbox("**Choose Analysis View:**", ["Global Map", "By Country"], label_visibility="visible")
+st.markdown("*Comprehensive analysis and visualization of seismic activity worldwide*")
+
+page = st.selectbox("**Choose Analysis View:**", ["Global Earthquake Map", "Earthquake Occurrence By Country"], label_visibility="visible")
 
 try:
     df = load_data()
     
-    # Year range slider at top for both pages
+    # Sidebar setup - Time range at the top for both pages
+    st.sidebar.header("📅 Time Range Selection")
+    
     if not df.empty and 'DateTime' in df.columns:
         min_year = int(df['DateTime'].dt.year.min())
         max_year = int(df['DateTime'].dt.year.max())
         
-        st.subheader("📅 Time Range Selection")
-        year_range = st.slider(
+        year_range = st.sidebar.slider(
             "Select year range:",
             min_value=min_year,
             max_value=max_year,
@@ -119,13 +122,13 @@ try:
         )
         start_year, end_year = year_range
     
-    if page == "Global Map":
+    if page == "Global Earthquake Map":
         # Title and description
         st.title("Global Earthquake Analysis")
         st.markdown("**Real-time visualization of earthquake activity worldwide**")
         
         # Sidebar controls
-        st.sidebar.header("Controls")
+        st.sidebar.header("🎛️ Display Controls")
         
         # Magnitude filter
         st.sidebar.subheader("Magnitude Range")
@@ -289,7 +292,7 @@ try:
                     box_fig.update_layout(xaxis_tickangle=45)
                     st.plotly_chart(box_fig, use_container_width=True)
     
-    elif page == "By Country":
+    elif page == "Earthquake Occurrence By Country":
         st.title("Earthquake Analysis by Country")
         st.markdown("**Country-level earthquake frequency and magnitude analysis**")
         
@@ -297,7 +300,7 @@ try:
         df_with_countries = assign_countries(df)
         
         # Sidebar controls for country analysis
-        st.sidebar.header("Country Analysis Controls")
+        st.sidebar.header("🎛️ Country Analysis Controls")
         
         # Magnitude threshold slider starting at 5.0
         st.sidebar.subheader("Magnitude Range")
