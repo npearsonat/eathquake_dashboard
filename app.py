@@ -71,8 +71,8 @@ def assign_countries(df):
     return gdf
 
 # Main title and navigation
-st.title("🌍 Global Earthquake Dashboard")
-st.markdown("*Comprehensive analysis and visualization of seismic activity worldwide*")
+st.title("Global Earthquake Dashboard")
+st.markdown("*Comprehensive analysis and visualization of seismic activity worldwide*  \nSignificant Earthquakes, 1965-2016 https://www.kaggle.com/datasets/usgs/earthquake-database")
 
 page = st.selectbox("**Choose Analysis View:**", ["Global Earthquake Map", "Earthquake Occurrence By Country"], label_visibility="visible")
 
@@ -123,7 +123,7 @@ try:
             filtered_df = df[df['Magnitude'] >= magnitude_range].copy()
         
         # Display statistics in boxes
-        st.markdown("### 📊 Summary Statistics")
+        st.markdown("### Summary Statistics")
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
@@ -315,7 +315,7 @@ try:
             )
             
             # Display top-level metrics in styled boxes
-            st.markdown("### 📊 Country Analysis Summary")
+            st.markdown("### Country Analysis Summary")
             col1, col2, col3, col4 = st.columns(4)
             
             with col1:
