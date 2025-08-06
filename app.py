@@ -97,8 +97,8 @@ try:
     
     if page == "Global Earthquake Map":
         # Title and description
-        st.title("Global Earthquake Analysis")
-        st.markdown("**Real-time visualization of earthquake activity worldwide**")
+        st.header("Global Earthquake Analysis")
+        st.markdown("**Visualization of earthquake activity worldwide**")
         
         # Magnitude filter
         st.sidebar.subheader("Magnitude Range")
@@ -263,7 +263,7 @@ try:
                     st.plotly_chart(box_fig, use_container_width=True)
     
     elif page == "Earthquake Occurrence By Country":
-        st.title("Earthquake Analysis by Country")
+        st.header("Earthquake Analysis by Country")
         st.markdown("**Country-level earthquake frequency and magnitude analysis**")
         
         # Assign countries to earthquakes
