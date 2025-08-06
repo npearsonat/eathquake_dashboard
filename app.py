@@ -358,23 +358,20 @@ try:
                         <h2 style="margin: 0; color: #d63384; font-size: 1rem; text-align: center;">{}</h2>
                     </div>
                     """.format(highest_risk_country), unsafe_allow_html=True)
-            
-            # Create choropleth map with improved styling similar to first page
-            # Map country names to ISO codes for choropleth
-            # Map country names to ISO codes for choropleth
-            country_iso_mapping = {
-                'United States': 'USA', 'Japan': 'JPN', 'Indonesia': 'IDN', 
-                'Chile': 'CHL', 'Mexico': 'MEX', 'Turkey': 'TUR', 'Iran': 'IRN',
-                'Peru': 'PER', 'Greece': 'GRC', 'Italy': 'ITA', 'Philippines': 'PHL',
-                'New Zealand': 'NZL', 'China': 'CHN', 'India': 'IND', 
-                'Afghanistan': 'AFG', 'Russia': 'RUS', 'Papua New Guinea': 'PNG',
-                'Ecuador': 'ECU', 'Guatemala': 'GTM', 'Costa Rica': 'CRI',
-                'Australia': 'AUS', 'South Africa': 'ZAF', 'Morocco': 'MAR',
-                'Algeria': 'DZA', 'Ethiopia': 'ETH', 'Kenya': 'KEN',
-                'Tanzania': 'TZA', 'Madagascar': 'MDG'
-            }
-            
-            country_stats['ISO_Code'] = country_stats['Country'].map(country_iso_mapping)
+
+            # Min Magnitude
+            min_magnitude = filtered_df['Magnitude'].min()
+            # Country Stats
+            country_stats = (
+                gdf.groupby(['ISO_Code', 'Country'])
+                .agg(
+                    Count=('Magnitude', 'size'),
+                    Avg_Magnitude=('Magnitude', 'mean'),
+                    Max_Magnitude=('Magnitude', 'max'),
+                    # Add Risk_Score if you have a formula for it, else remove this line
+                )
+                .reset_index()
+            )
             
             # Create tabs for additional analysis
             tab1, tab2, tab3 = st.tabs(["Country Frequency Map", "Rankings", "Detailed Analysis"])
