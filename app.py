@@ -75,7 +75,7 @@ st.title("Global Earthquake Dashboard")
 st.markdown("""Comprehensive analysis and visualization of seismic activity worldwide<br>
 Significant Earthquakes, 1965-2016. Source: https://www.kaggle.com/datasets/usgs/earthquake-database<br>
 The National Earthquake Information Center (NEIC) a national datacenter for earthquakes. Compiles data<br>
-from scientists from all over the world through cooperative agreements and seismograph networks.""")
+from scientists from all over the world through cooperative agreements and seismograph networks.""",unsafe_allow_html=True)
 
 page = st.selectbox("**Choose Analysis View:**", ["Global Earthquake Map", "Earthquake Occurrence By Country"], label_visibility="visible")
 
