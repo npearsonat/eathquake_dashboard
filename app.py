@@ -360,7 +360,15 @@ try:
                     """.format(highest_risk_country), unsafe_allow_html=True)
 
             # Min Magnitude
-            #min_magnitude = filtered_df['Magnitude'].min()
+            min_magnitude = st.sidebar.slider(
+                "Minimum magnitude to display:",
+                min_value=float(df['Magnitude'].min()),
+                max_value=float(df['Magnitude'].max()),
+                value=float(df['Magnitude'].min()),
+                step=0.1
+            )
+
+            gdf = assign_countries(df)
             # Country Stats
             country_stats = (
                 gdf.groupby(['ISO_Code', 'Country'])
