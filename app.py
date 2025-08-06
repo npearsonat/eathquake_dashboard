@@ -430,11 +430,8 @@ try:
                     },
                     color_continuous_scale='Reds',
                     title=f"Earthquake Frequency by Country (Magnitude {min_magnitude:.1f}+)",
-                    labels={'Count': 'Number of Earthquakes'},
-                    text='Count'
+                    labels={'Count': 'Number of Earthquakes'}
                 )
-
-                choropleth_fig.update_traces(textposition='auto')
                 
                 # Update layout with similar styling to first page
                 choropleth_fig.update_layout(
