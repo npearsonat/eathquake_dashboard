@@ -19,7 +19,19 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-color: #ffecec;
+        background-color: white;
+        background-image: repeating-linear-gradient(
+            to bottom,
+            white,
+            white 29px,
+            #ffb3b3 30px,
+            white 31px
+        );
+        background-size: 100% 31px;
+    }
+
+    [data-testid="stSidebar"] {
+        background-color: #fff0f0;
     }
     </style>
     """,
@@ -109,7 +121,7 @@ try:
     
     if page == "Global Earthquake Map":
         # Title and description
-        st.header("Global lysis")
+        st.header("Global Analysis")
         st.markdown("**Visualization of earthquake activity worldwide. Shows earthquake epicenter locations.Higher magnitude quakes represented by larger and darker circles**")
         
         # Magnitude filter
