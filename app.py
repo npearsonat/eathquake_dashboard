@@ -73,7 +73,7 @@ def assign_countries(df):
 # Main title and navigation
 st.title("Global Earthquake Dashboard")
 st.markdown("""Comprehensive analysis and visualization of seismic activity worldwide<br>
-Significant Earthquakes, 1965-2016. Source: https://www.kaggle.com/datasets/usgs/earthquake-database<br>
+Significant Earthquakes, 1965-2016. Source: https://www.kaggle.com/datasets/usgs/earthquake-database.<br>
 The National Earthquake Information Center (NEIC) a national datacenter for earthquakes. Compiles data<br>
 from scientists from all over the world through cooperative agreements and seismograph networks.""",unsafe_allow_html=True)
 
@@ -268,6 +268,7 @@ try:
         
         # Assign countries to earthquakes
         df_with_countries = assign_countries(df)
+
         
         # Magnitude threshold slider starting at 5.0
         st.sidebar.subheader("Magnitude Range")
@@ -316,6 +317,8 @@ try:
                 country_stats['Avg_Magnitude'] * 10 + 
                 country_stats['Max_Magnitude'] * 5
             )
+            #Store risk score in session
+            st.session_state['country_stats'] = country_stats
             
             # Display top-level metrics in styled boxes
             st.markdown("### Country Analysis Summary")
@@ -491,6 +494,11 @@ try:
                 st.plotly_chart(risk_fig, use_container_width=True)
                 
                 # Complete country statistics table
+                if 'country_stats' in st.session_state:
+                    country_stats = st.session_state['country_stats']
+                    # (then go ahead with your plot and table code)
+                else:
+                    st.warning("Please visit the 'Earthquake Occurrence By Country' tab first to generate country statistics.")
                 st.subheader("📋 Complete Country Statistics")
                 display_stats = country_stats[['Country', 'Count', 'Avg_Magnitude', 'Max_Magnitude', 'Risk_Score']].copy()
                 display_stats = display_stats.sort_values('Risk_Score', ascending=False)
