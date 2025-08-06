@@ -432,6 +432,15 @@ try:
                     title=f"Earthquake Frequency by Country (Magnitude {min_magnitude:.1f}+)",
                     labels={'Count': 'Number of Earthquakes'}
                 )
+
+                choropleth_fig.add_trace(go.Scattergeo(
+                    locations=country_stats['ISO_Code'],
+                    locationmode='ISO-3',
+                    text=country_stats['Count'],
+                    mode='text',
+                    textfont=dict(color='black', size=10),
+                    showlegend=False
+                ))
                 
                 # Update layout with similar styling to first page
                 choropleth_fig.update_layout(
