@@ -433,6 +433,8 @@ try:
                     labels={'Count': 'Number of Earthquakes'},
                     text='Count'
                 )
+
+                choropleth_fig.update_traces(textposition='auto')
                 
                 # Update layout with similar styling to first page
                 choropleth_fig.update_layout(
