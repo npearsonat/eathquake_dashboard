@@ -430,7 +430,8 @@ try:
                     },
                     color_continuous_scale='Reds',
                     title=f"Earthquake Frequency by Country (Magnitude {min_magnitude:.1f}+)",
-                    labels={'Count': 'Number of Earthquakes'}
+                    labels={'Count': 'Number of Earthquakes'},
+                    text='Count'
                 )
                 
                 # Update layout with similar styling to first page
