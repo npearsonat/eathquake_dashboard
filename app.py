@@ -306,10 +306,10 @@ try:
         st.sidebar.subheader("Magnitude Range")
         min_magnitude = st.sidebar.slider(
             "Minimum magnitude to display:",
-            min_value=0.0,
+            min_value= 5.0,
             max_value=9.0,
-            value=5.0,  # Start at 5.0
-            step=0.1,
+            value=5.0,
+            step=0.5,
             help="Higher magnitudes represent exponentially more powerful earthquakes"
         )
         
