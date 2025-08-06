@@ -14,6 +14,19 @@ st.set_page_config(
     layout="wide"
 )
 
+# Background color
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: #ffecec;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
 # Load earthquake data
 @st.cache_data
 def load_data():
