@@ -47,21 +47,28 @@ def assign_countries(df):
     import geopandas as gpd
     from shapely.geometry import Point
 
-    # Load the Natural Earth country boundaries shapefile
+    # Load Natural Earth country boundaries
     countries = gpd.read_file("data/ne_110m_admin_0_countries/ne_110m_admin_0_countries.shp")
 
     # Convert earthquake DataFrame to GeoDataFrame
     geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
     gdf = gpd.GeoDataFrame(df, geometry=geometry, crs=countries.crs)
 
-    # Perform spatial join to assign countries
-    gdf = gpd.sjoin(gdf, countries[['ADMIN', 'geometry']], how='left', predicate='within')
+    # Perform spatial join to assign country names and ISO codes
+    gdf = gpd.sjoin(
+        gdf, 
+        countries[['ADMIN', 'ISO_A3', 'geometry']], 
+        how='left', 
+        predicate='within'
+    )
 
-    # Rename and clean up
-    gdf = gdf.rename(columns={'ADMIN': 'Country'}).drop(columns=['index_right'])
+    # Rename columns and drop unnecessary ones
+    gdf = gdf.rename(columns={
+        'ADMIN': 'Country',
+        'ISO_A3': 'ISO_Code'
+    }).drop(columns=['index_right'])
 
     return gdf
-
 
 # Main title and navigation
 st.title("🌍 Global Earthquake Dashboard")
