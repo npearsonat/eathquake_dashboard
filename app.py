@@ -22,7 +22,7 @@ st.markdown(
         background-color: white;
         background-image: repeating-linear-gradient(
             45deg,
-            #ffb3b3,
+            #f2d4c7,
             #ffb3b3 0.5px,
             white 0.5px,
             white 20px
