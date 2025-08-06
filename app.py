@@ -268,7 +268,6 @@ try:
         
         # Assign countries to earthquakes
         df_with_countries = assign_countries(df)
-
         
         # Magnitude threshold slider starting at 5.0
         st.sidebar.subheader("Magnitude Range")
@@ -288,20 +287,20 @@ try:
                 (df_with_countries['DateTime'].dt.year >= start_year) & 
                 (df_with_countries['DateTime'].dt.year <= end_year) &
                 (df_with_countries['Magnitude'] >= min_magnitude) &
-                (df_with_countries['Country'] != 'Unknown')
+                (df_with_countries['Country'].notna())
             )
             country_filtered_df = df_with_countries[country_mask]
         else:
             country_filtered_df = df_with_countries[
                 (df_with_countries['Magnitude'] >= min_magnitude) &
-                (df_with_countries['Country'] != 'Unknown')
+                (df_with_countries['Country'].notna())
             ]
         
         if country_filtered_df.empty:
             st.warning("No earthquakes found for the selected criteria in known countries.")
         else:
-            # Calculate country statistics
-            country_stats = country_filtered_df.groupby('Country').agg({
+            # SINGLE CALCULATION FOR COUNTRY STATS - This is the fix!
+            country_stats = country_filtered_df.groupby(['ISO_Code', 'Country']).agg({
                 'Magnitude': ['count', 'mean', 'max', 'std'],
                 'Latitude': 'first',  # For approximate country position
                 'Longitude': 'first'
@@ -317,9 +316,7 @@ try:
                 country_stats['Avg_Magnitude'] * 10 + 
                 country_stats['Max_Magnitude'] * 5
             )
-            #Store risk score in session
-            st.session_state['country_stats'] = country_stats
-            
+
             # Display top-level metrics in styled boxes
             st.markdown("### Country Analysis Summary")
             col1, col2, col3, col4 = st.columns(4)
@@ -364,20 +361,6 @@ try:
                         <h2 style="margin: 0; color: #d63384; font-size: 1rem; text-align: center;">{}</h2>
                     </div>
                     """.format(highest_risk_country), unsafe_allow_html=True)
-
-            # Gdf Def
-            gdf = assign_countries(df)
-            # Country Stats
-            country_stats = (
-                gdf.groupby(['ISO_Code', 'Country'])
-                .agg(
-                    Count=('Magnitude', 'size'),
-                    Avg_Magnitude=('Magnitude', 'mean'),
-                    Max_Magnitude=('Magnitude', 'max'),
-                    # Add Risk_Score if you have a formula for it, else remove this line
-                )
-                .reset_index()
-            )
             
             # Create tabs for additional analysis
             tab1, tab2, tab3 = st.tabs(["Country Frequency Map", "Rankings", "Detailed Analysis"])
@@ -493,12 +476,6 @@ try:
                 risk_fig.update_layout(height=500)
                 st.plotly_chart(risk_fig, use_container_width=True)
                 
-                # Complete country statistics table
-                if 'country_stats' in st.session_state:
-                    country_stats = st.session_state['country_stats']
-                    # (then go ahead with your plot and table code)
-                else:
-                    st.warning("Please visit the 'Earthquake Occurrence By Country' tab first to generate country statistics.")
                 st.subheader("📋 Complete Country Statistics")
                 display_stats = country_stats[['Country', 'Count', 'Avg_Magnitude', 'Max_Magnitude', 'Risk_Score']].copy()
                 display_stats = display_stats.sort_values('Risk_Score', ascending=False)
