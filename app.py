@@ -106,9 +106,6 @@ page = st.selectbox("**Choose Analysis View:**", ["Global Earthquake Map", "Eart
 try:
     df = load_data()
     
-    # Sidebar setup - Time range at the top for both pages
-    st.sidebar.header("📅 Time Range Selection")
-    
     if not df.empty and 'DateTime' in df.columns:
         min_year = int(df['DateTime'].dt.year.min())
         max_year = int(df['DateTime'].dt.year.max())
@@ -126,9 +123,6 @@ try:
         # Title and description
         st.title("Global Earthquake Analysis")
         st.markdown("**Real-time visualization of earthquake activity worldwide**")
-        
-        # Sidebar controls
-        st.sidebar.header("🎛️ Display Controls")
         
         # Magnitude filter
         st.sidebar.subheader("Magnitude Range")
