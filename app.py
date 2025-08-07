@@ -10,7 +10,7 @@ from shapely.geometry import Point
 # Page configuration
 st.set_page_config(
     page_title="Global Earthquake Dashboard",
-    page_icon="assets/epicenter.png"
+    page_icon="assets/epicenter.png",
     layout="wide"
 )
 
