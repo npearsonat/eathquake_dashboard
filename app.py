@@ -10,7 +10,7 @@ from shapely.geometry import Point
 # Page configuration
 st.set_page_config(
     page_title="Global Earthquake Dashboard",
-    page_icon="🌍",
+    page_icon="assets/epicenter.png"
     layout="wide"
 )
 
@@ -439,7 +439,7 @@ try:
                 col1, col2 = st.columns(2)
                 
                 with col1:
-                    st.subheader("🏆 Top 10 by Frequency")
+                    st.subheader("Top 10 by Frequency")
                     top_frequency = country_stats.nlargest(10, 'Count')[['Country', 'Count', 'Avg_Magnitude']]
                     st.dataframe(top_frequency, use_container_width=True)
                     
@@ -456,7 +456,7 @@ try:
                     st.plotly_chart(freq_fig, use_container_width=True)
                 
                 with col2:
-                    st.subheader("⚡ Top 10 by Max Magnitude")
+                    st.subheader("Top 10 by Max Magnitude")
                     top_magnitude = country_stats.nlargest(10, 'Max_Magnitude')[['Country', 'Max_Magnitude', 'Count']]
                     st.dataframe(top_magnitude, use_container_width=True)
                     
@@ -474,7 +474,7 @@ try:
             
             with tab3:
                 # Detailed analysis
-                st.subheader("📈 Risk Assessment")
+                st.subheader("Risk Assessment")
                 
                 # Scatter plot: Frequency vs Average Magnitude
                 risk_fig = px.scatter(
