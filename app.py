@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import numpy as np
 import geopandas as gpd
 from shapely.geometry import Point
+import base64
 
 # Page configuration
 st.set_page_config(
@@ -32,6 +33,12 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+#Image Icons
+def get_base64_image(image_path):
+    with open(image_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
 
 # Load earthquake data
 @st.cache_data
@@ -90,11 +97,12 @@ def assign_countries(df):
     return gdf
 
 # Main title and navigation
+icon_base64 = get_base64_image("assets/epicenter.png")
 st.markdown(
-    '''
+    f'''
     <h1 style="display: flex; align-items: center; gap: 10px;">
         Global Earthquake Dashboard
-        <img src="assets/epicenter.png" width="32" height="32" alt="icon">
+        <img src="data:image/png;base64,{icon_base64}" width="32" height="32" alt="icon">
     </h1>
     ''',
     unsafe_allow_html=True
