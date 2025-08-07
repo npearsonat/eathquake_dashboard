@@ -90,7 +90,15 @@ def assign_countries(df):
     return gdf
 
 # Main title and navigation
-st.title("Global Earthquake Dashboard")
+st.markdown(
+    '''
+    <h1 style="display: flex; align-items: center; gap: 10px;">
+        Global Earthquake Dashboard
+        <img src="assets/epicenter.png" width="32" height="32" alt="icon">
+    </h1>
+    ''',
+    unsafe_allow_html=True
+)
 st.markdown("""Comprehensive analysis and visualization of seismic activity worldwide<br>
 Significant Earthquakes, 1965-2016. Source: https://www.kaggle.com/datasets/usgs/earthquake-database.<br>
 The National Earthquake Information Center (NEIC) a national datacenter for earthquakes. Compiles data<br>
