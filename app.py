@@ -217,8 +217,7 @@ st.markdown(
 )
 st.markdown("""Comprehensive analysis and visualization of seismic activity worldwide<br>
 Live Data: Sourced from United States Geoscience USGS Earthquake Hazards program API: https://earthquake.usgs.gov/fdsnws/event/1/ <br>
-Historical Data: Significant Earthquakes, 1965-2016. Source: https://www.kaggle.com/datasets/usgs/earthquake-database.<br>
-Live Data: Real-time earthquake information from USGS Earthquake Hazards Program.""",unsafe_allow_html=True)
+Historical Data: Significant Earthquakes, 1965-2016. Source: https://www.kaggle.com/datasets/usgs/earthquake-database.""",unsafe_allow_html=True)
 
 # UPDATED PAGE SELECTION with new Live Feed option
 page = st.selectbox("**Choose Analysis View:**", 
@@ -227,7 +226,7 @@ page = st.selectbox("**Choose Analysis View:**",
 
 # NEW: LIVE FEED PAGE
 if page == "Live Feed":
-    st.header("🔴 Live Earthquake Feed")
+    st.header("Live Earthquake Feed")
     st.markdown("**Real-time earthquake data from the USGS Earthquake Hazards Program. Data updates every few minutes.**")
     
     # Live feed controls
@@ -269,7 +268,7 @@ if page == "Live Feed":
                    f"API Status: ✅ Active | Total events: {len(live_df)}")
         
         # Live statistics
-        st.markdown("### 📊 Live Statistics")
+        st.markdown("### Live Statistics")
         col1, col2, col3, col4, col5 = st.columns(5)
         
         with col1:
@@ -317,7 +316,7 @@ if page == "Live Feed":
             """, unsafe_allow_html=True)
         
         # Tabs for different views
-        tab1, tab2, tab3, tab4 = st.tabs(["🗺️ Live Map", "📈 Recent Trends", "📋 Event List", "⏰ Timeline"])
+        tab1, tab2, tab3, tab4 = st.tabs([" Live Map", "📈 Recent Trends", "📋 Event List", "⏰ Timeline"])
         
         with tab1:
             # Live earthquake map
@@ -372,7 +371,7 @@ if page == "Live Feed":
         
         with tab3:
             # Recent earthquakes table
-            st.subheader("📋 Recent Earthquake Events")
+            st.subheader(" Recent Earthquake Events")
             
             # Format the data for display
             display_df = live_df.copy()
@@ -400,7 +399,7 @@ if page == "Live Feed":
         
         with tab4:
             # Timeline view
-            st.subheader("⏰ Earthquake Timeline")
+            st.subheader(" Earthquake Timeline")
             
             if len(live_df) > 0:
                 # Create a timeline chart
@@ -422,7 +421,7 @@ if page == "Live Feed":
                 
                 # Show most recent earthquake details
                 latest_eq = live_df.iloc[0]
-                st.markdown("### 🔥 Most Recent Earthquake")
+                st.markdown("###  Most Recent Earthquake")
                 
                 recent_col1, recent_col2, recent_col3 = st.columns(3)
                 
