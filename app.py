@@ -221,7 +221,7 @@ Live Data: Real-time earthquake information from USGS Earthquake Hazards Program
 
 # UPDATED PAGE SELECTION with new Live Feed option
 page = st.selectbox("**Choose Analysis View:**", 
-                   ["Live Feed", "Global Earthquake Map", "Earthquake Occurrence By Country"], 
+                   ["Live Feed", "Historical Earthquake Map", "Historical Earthquake Occurrence By Country"], 
                    label_visibility="visible")
 
 # NEW: LIVE FEED PAGE
