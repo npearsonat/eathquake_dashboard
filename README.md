@@ -13,7 +13,7 @@ A real-time earthquake monitoring application built with Streamlit that provides
 
 ## Screenshots
 
-![Dashboard Screenshot](historical_dash.jpeg)
+![Dashboard Screenshot](assets/historical_dash.jpeg)
 
 ## Pages & Functionality
 
