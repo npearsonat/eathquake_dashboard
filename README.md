@@ -23,7 +23,7 @@ The home page provides an overview of recent seismic activity with key statistic
 - Quick magnitude and timeframe filters
 - Key statistics display
 
-![Dashboard Screenshot](live_feed_gif.gif)
+![App Demo](assets/live_feed_gif.gif)
 
 ### 🗺️ Interactive Map
 Visualize earthquake locations on an interactive world map with customizable markers and popup information.
