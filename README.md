@@ -10,11 +10,11 @@ A real-time earthquake monitoring application built with Streamlit that provides
 - **Customizable filtering** by magnitude and timeframe
 - **Detailed earthquake information** including location, depth, and impact data
 
-![Dashboard Screenshot](assets/historical_dash.jpeg)
+![Live Demo](assets/live_usgs_demo.gif)
 
 ## Pages & Functionality
 
-### Main Dashboard
+### Live USGS Earthquake Feed
 The home page provides an overview of recent seismic activity with key statistics and quick access to filtering options.
 
 **Features:**
