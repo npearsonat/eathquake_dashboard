@@ -728,7 +728,7 @@ else:
                     top_count = country_stats['Count'].max()
                     with st.container():
                         st.markdown("""
-                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; height: 90px; display: flex; flex-direction: column; justify-content: center;">
                             <h3 style="margin: 0; color: #28a745; font-size: 0.9rem; text-align: center;">Most Active</h3>
                             <h2 style="margin: 0; color: #1e7e34; font-size: 0.9rem; text-align: center;">{} ({})</h2>
                         </div>
