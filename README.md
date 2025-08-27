@@ -1,4 +1,4 @@
-# Earthquake Monitor App
+# Earthquake Monitor Dashboard
 
 A real-time earthquake monitoring application built with Streamlit that provides up-to-date seismic activity data from the USGS Earthquake Hazards Program live API data.
 Two pages dedicated to historical earthquake data sourced from National Earthquake Information Center NEIC dataset. 
