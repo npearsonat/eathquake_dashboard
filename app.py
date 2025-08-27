@@ -50,15 +50,30 @@ def get_usgs_earthquake_data(magnitude='2.5', timeframe='day'):
     
     Parameters:
     - magnitude: minimum magnitude ('1.0', '2.5', '4.0', '5.0', '6.0')  
-    - timeframe: time period ('hour', 'day', 'week', 'month')
+    - timeframe: time period ('hour', 'day', 'week', 'month', 'year', '5years', '10years')
     
     Returns: DataFrame
     """
     
-    url = f"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/{magnitude}_{timeframe}.geojson"
+    # Handle custom timeframes that aren't directly supported by USGS
+    if timeframe in ['year', '5years', '10years']:
+        # For longer periods, use 'all' data and filter by date
+        url = f"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
+        
+        # Calculate date range
+        end_date = datetime.now()
+        if timeframe == 'year':
+            start_date = end_date - timedelta(days=365)
+        elif timeframe == '5years':
+            start_date = end_date - timedelta(days=365*5)
+        elif timeframe == '10years':
+            start_date = end_date - timedelta(days=365*10)
+    else:
+        url = f"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/{magnitude}_{timeframe}.geojson"
+        start_date = None
     
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=15)
         response.raise_for_status()
         data = response.json()
         
@@ -73,10 +88,20 @@ def get_usgs_earthquake_data(magnitude='2.5', timeframe='day'):
             props = feature['properties']
             coords = feature['geometry']['coordinates']
             
+            earthquake_time = pd.to_datetime(props.get('time'), unit='ms', utc=True)
+            
+            # Filter by magnitude and date range for custom timeframes
+            magnitude_value = props.get('mag')
+            if magnitude_value is None or magnitude_value < float(magnitude):
+                continue
+                
+            if start_date and earthquake_time < start_date:
+                continue
+            
             earthquakes.append({
-                'Magnitude': props.get('mag'),
+                'Magnitude': magnitude_value,
                 'Place': props.get('place'),
-                'DateTime': pd.to_datetime(props.get('time'), unit='ms', utc=True),
+                'DateTime': earthquake_time,
                 'Latitude': coords[1],
                 'Longitude': coords[0],
                 'Depth': coords[2],
@@ -90,7 +115,8 @@ def get_usgs_earthquake_data(magnitude='2.5', timeframe='day'):
         
         df = pd.DataFrame(earthquakes)
         # Remove rows with missing essential data
-        df = df.dropna(subset=['Magnitude', 'Latitude', 'Longitude'])
+        if not df.empty:
+            df = df.dropna(subset=['Magnitude', 'Latitude', 'Longitude'])
         
         return df, data['metadata']
         
@@ -216,17 +242,19 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.markdown("""Comprehensive analysis and visualization of seismic activity worldwide<br>
-Live Data: Sourced from United States Geoscience USGS Earthquake Hazards program API: https://earthquake.usgs.gov/fdsnws/event/1/ <br>
-Historical Data: Significant Earthquakes, 1965-2016. Source: https://www.kaggle.com/datasets/usgs/earthquake-database.""",unsafe_allow_html=True)
+Live Data: Real-time earthquake information from USGS Earthquake Hazards Program API: https://earthquake.usgs.gov/fdsnws/event/1/. <br>
+Historical Data: Significant Earthquakes, 1965-2016. Source: https://www.kaggle.com/datasets/usgs/earthquake-database.<br><br>
+This is a dashboard that described historic and live earthquake events using two different APIs and data sources as listed above. <br>
+Users can select between three different pages to learn about recent earthquake trends, historical data, and data based by country.""",unsafe_allow_html=True)
 
 # UPDATED PAGE SELECTION with new Live Feed option
 page = st.selectbox("**Choose Analysis View:**", 
-                   ["Live Feed", "Historical Earthquake Map", "Historical Earthquake Occurrence By Country"], 
+                   ["Live Feed", "Global Earthquake Map", "Earthquake Occurrence By Country"], 
                    label_visibility="visible")
 
 # NEW: LIVE FEED PAGE
 if page == "Live Feed":
-    st.header("Live Earthquake Feed")
+    st.header("🔴 Live Earthquake Feed")
     st.markdown("**Real-time earthquake data from the USGS Earthquake Hazards Program. Data updates every few minutes.**")
     
     # Live feed controls
@@ -243,7 +271,7 @@ if page == "Live Feed":
     with col2:
         live_timeframe = st.selectbox(
             "Time Period:",
-            options=[('hour', 'Past Hour'), ('day', 'Past Day'), ('week', 'Past Week'), ('month', 'Past Month')],
+            options=[('hour', 'Past Hour'), ('day', 'Past Day'), ('week', 'Past Week'), ('month', 'Past Month'), ('year', 'Past Year'), ('5years', 'Past 5 Years'), ('10years', 'Past 10 Years')],
             format_func=lambda x: x[1],
             index=1,
             key="live_time"
@@ -273,45 +301,45 @@ if page == "Live Feed":
         
         with col1:
             st.markdown(f"""
-            <div style="padding: 1rem; border: 0.5px solid #28a745; border-radius: 0.5px; background-color: #f8fff8; text-align: center;">
-                <h3 style="margin: 0; color: #28a745; font-size: 1rem;">Total Events</h3>
-                <h2 style="margin: 0; color: #155724;">{len(live_df)}</h2>
+            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                <h3 style="margin: 0; color: #007bff; font-size: 0.9rem;">Total Events</h3>
+                <h2 style="margin: 0; color: #0056b3;">{len(live_df)}</h2>
             </div>
             """, unsafe_allow_html=True)
         
         with col2:
             latest_mag = live_df.iloc[0]['Magnitude'] if len(live_df) > 0 else 0
             st.markdown(f"""
-            <div style="padding: 1rem; border: 2px solid #ffc107; border-radius: 10px; background-color: #fffbf0; text-align: center;">
-                <h3 style="margin: 0; color: #ffc107; font-size: 1rem;">Latest Magnitude</h3>
-                <h2 style="margin: 0; color: #856404;">{latest_mag:.1f}</h2>
+            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                <h3 style="margin: 0; color: #007bff; font-size: 0.9rem;">Latest Magnitude</h3>
+                <h2 style="margin: 0; color: #0056b3;">{latest_mag:.1f}</h2>
             </div>
             """, unsafe_allow_html=True)
         
         with col3:
             max_mag = live_df['Magnitude'].max()
             st.markdown(f"""
-            <div style="padding: 1rem; border: 0.5px solid #dc3545; border-radius: 10px; background-color: #fff5f5; text-align: center;">
-                <h3 style="margin: 0; color: #dc3545; font-size: 1rem;">Max Magnitude</h3>
-                <h2 style="margin: 0; color: #721c24;">{max_mag:.1f}</h2>
+            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                <h3 style="margin: 0; color: #007bff; font-size: 0.9rem;">Max Magnitude</h3>
+                <h2 style="margin: 0; color: #0056b3;">{max_mag:.1f}</h2>
             </div>
             """, unsafe_allow_html=True)
         
         with col4:
             major_count = len(live_df[live_df['Magnitude'] >= 5.0])
             st.markdown(f"""
-            <div style="padding: 1rem; border: 2px solid #6f42c1; border-radius: 10px; background-color: #f8f7ff; text-align: center;">
-                <h3 style="margin: 0; color: #6f42c1; font-size: 1rem;">Major (5.0+)</h3>
-                <h2 style="margin: 0; color: #3d1a5b;">{major_count}</h2>
+            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                <h3 style="margin: 0; color: #007bff; font-size: 0.9rem;">Major (5.0+)</h3>
+                <h2 style="margin: 0; color: #0056b3;">{major_count}</h2>
             </div>
             """, unsafe_allow_html=True)
         
         with col5:
             avg_depth = live_df['Depth'].mean()
             st.markdown(f"""
-            <div style="padding: 1rem; border: 2px solid #17a2b8; border-radius: 10px; background-color: #f7feff; text-align: center;">
-                <h3 style="margin: 0; color: #17a2b8; font-size: 1rem;">Avg Depth (km)</h3>
-                <h2 style="margin: 0; color: #0c5460;">{avg_depth:.1f}</h2>
+            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                <h3 style="margin: 0; color: #007bff; font-size: 0.9rem;">Avg Depth (km)</h3>
+                <h2 style="margin: 0; color: #0056b3;">{avg_depth:.1f}</h2>
             </div>
             """, unsafe_allow_html=True)
         
@@ -421,7 +449,7 @@ if page == "Live Feed":
                 
                 # Show most recent earthquake details
                 latest_eq = live_df.iloc[0]
-                st.markdown("###  Most Recent Earthquake")
+                st.markdown("### Most Recent Earthquake")
                 
                 recent_col1, recent_col2, recent_col3 = st.columns(3)
                 
@@ -436,7 +464,7 @@ if page == "Live Feed":
                 with recent_col3:
                     st.metric("Coordinates", f"{latest_eq['Latitude']:.3f}, {latest_eq['Longitude']:.3f}")
                     if latest_eq['URL']:
-                        st.markdown(f"[📊 View USGS Details]({latest_eq['URL']})")
+                        st.markdown(f"[ View USGS Details]({latest_eq['URL']})")
     
     else:
         st.warning("⚠️ No recent earthquakes found for the selected criteria, or unable to connect to USGS API.")
@@ -460,7 +488,7 @@ else:
             )
             start_year, end_year = year_range
         
-        if page == "Historical Earthquake Map":
+        if page == "Global Earthquake Map":
             # Title and description
             st.header("Global Analysis")
             st.markdown("**Visualization of earthquake activity worldwide. Shows earthquake epicenter locations.Higher magnitude quakes represented by larger and darker circles**")
@@ -627,7 +655,7 @@ else:
                         box_fig.update_layout(xaxis_tickangle=45)
                         st.plotly_chart(box_fig, use_container_width=True)
         
-        elif page == "Historical Earthquake Occurrence By Country":
+        elif page == "Earthquake Occurrence By Country":
             st.header("Earthquake Analysis by Country")
             st.markdown("**Country-level earthquake frequency and magnitude analysis. Quake location attributed using epicenter coordinates**")
             
@@ -689,9 +717,9 @@ else:
                 with col1:
                     with st.container():
                         st.markdown("""
-                        <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
-                            <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Countries Analyzed</h3>
-                            <h2 style="margin: 0; color: #d63384; text-align: center;">{}</h2>
+                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                            <h3 style="margin: 0; color: #28a745; font-size: 0.9rem; text-align: center;">Countries Analyzed</h3>
+                            <h2 style="margin: 0; color: #1e7e34; text-align: center;">{}</h2>
                         </div>
                         """.format(len(country_stats)), unsafe_allow_html=True)
                 
@@ -700,9 +728,9 @@ else:
                     top_count = country_stats['Count'].max()
                     with st.container():
                         st.markdown("""
-                        <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
-                            <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Most Active</h3>
-                            <h2 style="margin: 0; color: #d63384; font-size: 1rem; text-align: center;">{} ({})</h2>
+                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                            <h3 style="margin: 0; color: #28a745; font-size: 0.9rem; text-align: center;">Most Active</h3>
+                            <h2 style="margin: 0; color: #1e7e34; font-size: 0.9rem; text-align: center;">{} ({})</h2>
                         </div>
                         """.format(top_country, top_count), unsafe_allow_html=True)
                 
@@ -711,9 +739,9 @@ else:
                     highest_mag = country_stats['Max_Magnitude'].max()
                     with st.container():
                         st.markdown("""
-                        <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
-                            <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Highest Magnitude</h3>
-                            <h2 style="margin: 0; color: #d63384; font-size: 1rem; text-align: center;">{} ({})</h2>
+                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                            <h3 style="margin: 0; color: #28a745; font-size: 0.9rem; text-align: center;">Highest Magnitude</h3>
+                            <h2 style="margin: 0; color: #1e7e34; font-size: 0.9rem; text-align: center;">{} ({})</h2>
                         </div>
                         """.format(highest_mag, highest_mag_country), unsafe_allow_html=True)
                 
@@ -721,9 +749,9 @@ else:
                     highest_risk_country = country_stats.loc[country_stats['Risk_Score'].idxmax(), 'Country']
                     with st.container():
                         st.markdown("""
-                        <div style="padding: 1rem; border: 2px solid #ff6b6b; border-radius: 10px; background-color: #fff5f5; height: 120px; display: flex; flex-direction: column; justify-content: center;">
-                            <h3 style="margin: 0; color: #ff6b6b; font-size: 1rem; text-align: center;">Highest Risk</h3>
-                            <h2 style="margin: 0; color: #d63384; text-align: center;">{}</h2>
+                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                            <h3 style="margin: 0; color: #28a745; font-size: 0.9rem; text-align: center;">Highest Risk</h3>
+                            <h2 style="margin: 0; color: #1e7e34; text-align: center;">{}</h2>
                         </div>
                         """.format(highest_risk_country), unsafe_allow_html=True)
                 
