@@ -71,25 +71,4 @@ streamlit run app.py
 ## Data Source
 
 This application uses real-time data from the [USGS Earthquake Hazards Program](https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php) API.
-
-## Usage
-
-1. **Select timeframe**: Choose from hour, day, week, or month
-2. **Set magnitude filter**: Filter earthquakes by minimum magnitude (1.0, 2.5, 4.5, or significant)
-3. **Explore the data**: Use the map, table, and analytics views to analyze earthquake activity
-4. **Get details**: Click on individual earthquakes for detailed USGS information
-
-*[Add usage workflow GIF here]*
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Data provided by the U.S. Geological Survey Earthquake Hazards Program
-- Built with Streamlit and other open-source libraries
+And National Earthquake Information Center NEIC 1965-2016 dataset: https://www.kaggle.com/datasets/usgs/earthquake-database
