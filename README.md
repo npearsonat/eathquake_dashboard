@@ -18,9 +18,11 @@ Allows users to find information about recent and historical earthquakes, their 
 ## Pages & Functionality
 
 ### Live USGS Earthquake Feed
-The home page provides an overview of recent seismic activity with key statistics and quick access to filtering options.
+The home page provides an overview of recent seismic activity with key statistics and quick access to filtering options. It contains a map that displays recorded earthquakes from up to a month ago and their coordinate epicenters.
+The map displays higher magnitude earthquakes with larger and darker circles. Above the map are several statistics total number of events in the selected time frame and magnitude, latest magnitude of an earthquake,
+maximum earthquake magnitude, number of 5+ magnitude quakes, as well as average depth. In addition to the live map, there is a recent trends section containing bar graph depicting a count of earthquakes by magnitude, an event list that catalogues all recent quakes, and a timeline graph that charts all recent earthquakes by magnitude and date of occurence.
 
-**Features:**
+**Key Features:**
 - Recent earthquake summary
 - Quick magnitude and timeframe filters
 - Key statistics display
