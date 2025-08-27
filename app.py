@@ -310,7 +310,7 @@ if page == "Live Feed":
         with col2:
             latest_mag = live_df.iloc[0]['Magnitude'] if len(live_df) > 0 else 0
             st.markdown(f"""
-            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
                 <h3 style="margin: 0; color: #007bff; font-size: 0.9rem;">Latest Magnitude</h3>
                 <h2 style="margin: 0; color: #0056b3;">{latest_mag:.1f}</h2>
             </div>
@@ -319,7 +319,7 @@ if page == "Live Feed":
         with col3:
             max_mag = live_df['Magnitude'].max()
             st.markdown(f"""
-            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
                 <h3 style="margin: 0; color: #007bff; font-size: 0.9rem;">Max Magnitude</h3>
                 <h2 style="margin: 0; color: #0056b3;">{max_mag:.1f}</h2>
             </div>
@@ -328,7 +328,7 @@ if page == "Live Feed":
         with col4:
             major_count = len(live_df[live_df['Magnitude'] >= 5.0])
             st.markdown(f"""
-            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center;min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
                 <h3 style="margin: 0; color: #007bff; font-size: 0.9rem;">Major (5.0+)</h3>
                 <h2 style="margin: 0; color: #0056b3;">{major_count}</h2>
             </div>
@@ -337,7 +337,7 @@ if page == "Live Feed":
         with col5:
             avg_depth = live_df['Depth'].mean()
             st.markdown(f"""
-            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
                 <h3 style="margin: 0; color: #007bff; font-size: 0.9rem;">Avg Depth (km)</h3>
                 <h2 style="margin: 0; color: #0056b3;">{avg_depth:.1f}</h2>
             </div>
@@ -717,7 +717,7 @@ else:
                 with col1:
                     with st.container():
                         st.markdown("""
-                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
                             <h3 style="margin: 0; color: #28a745; font-size: 0.9rem; text-align: center;">Countries Analyzed</h3>
                             <h2 style="margin: 0; color: #1e7e34; text-align: center;">{}</h2>
                         </div>
@@ -728,7 +728,7 @@ else:
                     top_count = country_stats['Count'].max()
                     with st.container():
                         st.markdown("""
-                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
                             <h3 style="margin: 0; color: #28a745; font-size: 0.9rem; text-align: center;">Most Active</h3>
                             <h2 style="margin: 0; color: #1e7e34; font-size: 0.9rem; text-align: center;">{} ({})</h2>
                         </div>
@@ -739,7 +739,7 @@ else:
                     highest_mag = country_stats['Max_Magnitude'].max()
                     with st.container():
                         st.markdown("""
-                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
                             <h3 style="margin: 0; color: #28a745; font-size: 0.9rem; text-align: center;">Highest Magnitude</h3>
                             <h2 style="margin: 0; color: #1e7e34; font-size: 0.9rem; text-align: center;">{} ({})</h2>
                         </div>
@@ -749,7 +749,7 @@ else:
                     highest_risk_country = country_stats.loc[country_stats['Risk_Score'].idxmax(), 'Country']
                     with st.container():
                         st.markdown("""
-                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="padding: 0.5rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f0fff0; min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
                             <h3 style="margin: 0; color: #28a745; font-size: 0.9rem; text-align: center;">Highest Risk</h3>
                             <h2 style="margin: 0; color: #1e7e34; text-align: center;">{}</h2>
                         </div>
