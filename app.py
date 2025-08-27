@@ -236,7 +236,6 @@ st.markdown(
     f'''
     <h1 style="display: flex; align-items: center; gap: 10px;">
         Global Earthquake Dashboard
-        <img src="data:image/png;base64,{icon_base64}" width="32" height="32" alt="icon">
     </h1>
     ''',
     unsafe_allow_html=True
