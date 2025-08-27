@@ -55,6 +55,7 @@ def get_usgs_earthquake_data(magnitude='2.5', timeframe='day'):
     Returns: DataFrame
     """
     url = f"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/{magnitude}_{timeframe}.geojson"
+    start_date = None
     try:
         response = requests.get(url, timeout=15)
         response.raise_for_status()
