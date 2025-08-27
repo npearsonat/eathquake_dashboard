@@ -24,17 +24,6 @@ The home page provides an overview of recent seismic activity with key statistic
 
 ![Live Demo](assets/live_usgs_demo.gif)
 
-### Interactive Map
-Visualize earthquake locations on an interactive world map with customizable markers and popup information.
-
-**Features:**
-- Color-coded earthquake markers by magnitude
-- Clickable popups with detailed earthquake information
-- Zoom and pan functionality
-- Real-time data updates
-
-![App Demo](assets/interactive_map.gif)
-
 ### Global Historical Earthquake map
 Browse historical earthquake data from 1965 to 2016 dataset from National Earthquake Information Center NEIC static dataset.
 
