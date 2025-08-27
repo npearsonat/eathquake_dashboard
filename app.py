@@ -55,23 +55,6 @@ def get_usgs_earthquake_data(magnitude='2.5', timeframe='day'):
     Returns: DataFrame
     """
     
-    # Handle custom timeframes that aren't directly supported by USGS
-    if timeframe in ['year', '5years', '10years']:
-        # For longer periods, use 'all' data and filter by date
-        url = f"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
-        
-        # Calculate date range
-        end_date = datetime.now()
-        if timeframe == 'year':
-            start_date = end_date - timedelta(days=365)
-        elif timeframe == '5years':
-            start_date = end_date - timedelta(days=365*5)
-        elif timeframe == '10years':
-            start_date = end_date - timedelta(days=365*10)
-    else:
-        url = f"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/{magnitude}_{timeframe}.geojson"
-        start_date = None
-    
     try:
         response = requests.get(url, timeout=15)
         response.raise_for_status()
