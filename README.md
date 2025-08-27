@@ -76,4 +76,5 @@ streamlit run app.py
 ## Data Source
 
 This application uses real-time data from the [USGS Earthquake Hazards Program](https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php) API.
+
 And National Earthquake Information Center NEIC 1965-2016 dataset: https://www.kaggle.com/datasets/usgs/earthquake-database
