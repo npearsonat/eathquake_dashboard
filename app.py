@@ -271,7 +271,7 @@ if page == "Live Feed":
     with col2:
         live_timeframe = st.selectbox(
             "Time Period:",
-            options=[('hour', 'Past Hour'), ('day', 'Past Day'), ('week', 'Past Week'), ('month', 'Past Month'), ('year', 'Past Year'), ('5years', 'Past 5 Years'), ('10years', 'Past 10 Years')],
+            options=[('hour', 'Past Hour'), ('day', 'Past Day'), ('week', 'Past Week'), ('month', 'Past Month')],
             format_func=lambda x: x[1],
             index=1,
             key="live_time"
