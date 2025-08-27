@@ -292,7 +292,7 @@ if page == "Live Feed":
     if live_df is not None and not live_df.empty:
         # Display metadata
         if metadata:
-            st.info(f"📡 Last updated: {pd.to_datetime(metadata['generated'], unit='ms').strftime('%Y-%m-%d %H:%M:%S UTC')} | "
+            st.info(f" Last updated: {pd.to_datetime(metadata['generated'], unit='ms').strftime('%Y-%m-%d %H:%M:%S UTC')} | "
                    f"API Status: ✅ Active | Total events: {len(live_df)}")
         
         # Live statistics
@@ -301,7 +301,7 @@ if page == "Live Feed":
         
         with col1:
             st.markdown(f"""
-            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+            <div style="padding: 0.5rem; border: 2px solid #007bff; border-radius: 10px; background-color: #f0f8ff; text-align: center; min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
                 <h3 style="margin: 0; color: #007bff; font-size: 0.9rem;">Total Events</h3>
                 <h2 style="margin: 0; color: #0056b3;">{len(live_df)}</h2>
             </div>
