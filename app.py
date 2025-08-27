@@ -216,6 +216,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.markdown("""Comprehensive analysis and visualization of seismic activity worldwide<br>
+Live Data: Sourced from United States Geoscience USGS Earthquake Hazards program API: https://earthquake.usgs.gov/fdsnws/event/1/ <br>
 Historical Data: Significant Earthquakes, 1965-2016. Source: https://www.kaggle.com/datasets/usgs/earthquake-database.<br>
 Live Data: Real-time earthquake information from USGS Earthquake Hazards Program.""",unsafe_allow_html=True)
 
