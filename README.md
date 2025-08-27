@@ -1,21 +1,20 @@
-# Earthquake Monitor App 🌍
+# Earthquake Monitor App
 
 A real-time earthquake monitoring application built with Streamlit that provides up-to-date seismic activity data from the USGS Earthquake Hazards Program.
 
 ## Features
 
 - **Real-time earthquake data** from USGS API
+- **Historical earthquake** data from National Earthquake Information Center kaggle dataset
 - **Interactive world map** with earthquake markers
 - **Customizable filtering** by magnitude and timeframe
 - **Detailed earthquake information** including location, depth, and impact data
-- **Statistical analysis** and data visualization
-- **Responsive design** that works on desktop and mobile
 
 ![Dashboard Screenshot](assets/historical_dash.jpeg)
 
 ## Pages & Functionality
 
-### 🏠 Main Dashboard
+### Main Dashboard
 The home page provides an overview of recent seismic activity with key statistics and quick access to filtering options.
 
 **Features:**
@@ -25,7 +24,7 @@ The home page provides an overview of recent seismic activity with key statistic
 
 ![App Demo](assets/live_feed_gif.gif)
 
-### 🗺️ Interactive Map
+### Interactive Map
 Visualize earthquake locations on an interactive world map with customizable markers and popup information.
 
 **Features:**
@@ -36,18 +35,17 @@ Visualize earthquake locations on an interactive world map with customizable mar
 
 ![App Demo](assets/interactive_map.gif)
 
-### 📊 Data Table
-Browse detailed earthquake data in a sortable, filterable table format.
+### Global Historical Earthquake map
+Browse historical earthquake data from 1965 to 2016 dataset from National Earthquake Information Center NEIC static dataset.
 
 **Features:**
-- Sortable columns (magnitude, time, location, depth)
-- Search and filter capabilities
-- Export functionality
-- Links to detailed USGS reports
+- Year range selector
+- Magnitude selector
+- Interactive map show magnitude based on circle size and shade. 
 
-*[Add data table screenshot here]*
+![App Demo](assets/global_earthquake_map_gif.gif)
 
-### 📈 Analytics & Statistics
+### Analytics & Statistics
 View trends and patterns in seismic activity through charts and statistical analysis.
 
 **Features:**
