@@ -291,7 +291,7 @@ if page == "Live Feed":
         with col3:
             max_mag = live_df['Magnitude'].max()
             st.markdown(f"""
-            <div style="padding: 1rem; border: 2px solid #dc3545; border-radius: 10px; background-color: #fff5f5; text-align: center;">
+            <div style="padding: 1rem; border: 0.5px solid #dc3545; border-radius: 10px; background-color: #fff5f5; text-align: center;">
                 <h3 style="margin: 0; color: #dc3545; font-size: 1rem;">Max Magnitude</h3>
                 <h2 style="margin: 0; color: #721c24;">{max_mag:.1f}</h2>
             </div>
@@ -316,7 +316,7 @@ if page == "Live Feed":
             """, unsafe_allow_html=True)
         
         # Tabs for different views
-        tab1, tab2, tab3, tab4 = st.tabs([" Live Map", "📈 Recent Trends", "📋 Event List", "⏰ Timeline"])
+        tab1, tab2, tab3, tab4 = st.tabs([" Live Map", " Recent Trends", " Event List", " Timeline"])
         
         with tab1:
             # Live earthquake map
