@@ -34,7 +34,7 @@ Visualize earthquake locations on an interactive world map with customizable mar
 - Zoom and pan functionality
 - Real-time data updates
 
-![App Demo](assets/live_feed_usage_gif.gif)
+![App Demo](assets/interactive_map.gif)
 
 ### 📊 Data Table
 Browse detailed earthquake data in a sortable, filterable table format.
