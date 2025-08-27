@@ -2,6 +2,8 @@
 
 A real-time earthquake monitoring application built with Streamlit that provides up-to-date seismic activity data from the USGS Earthquake Hazards Program.
 
+![Dash Image](assets/image.png)
+
 ## Features
 
 - **Real-time earthquake data** from USGS API
