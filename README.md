@@ -1,4 +1,4 @@
-# Global Disaster Tracker
+# Earthquake Tracker
 
 A Streamlit dashboard for visualizing global natural disasters using public data. This app displays interactive maps, charts, and filters to help users explore patterns in recent natural disasters such as floods, wildfires, and earthquakes.
 
