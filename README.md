@@ -10,8 +10,6 @@ A real-time earthquake monitoring application built with Streamlit that provides
 - **Customizable filtering** by magnitude and timeframe
 - **Detailed earthquake information** including location, depth, and impact data
 
-![Live Demo](assets/live_usgs_demo.gif)
-
 ## Pages & Functionality
 
 ### Live USGS Earthquake Feed
@@ -22,7 +20,7 @@ The home page provides an overview of recent seismic activity with key statistic
 - Quick magnitude and timeframe filters
 - Key statistics display
 
-![App Demo](assets/live_feed_gif.gif)
+![Live Demo](assets/live_usgs_demo.gif)
 
 ### Interactive Map
 Visualize earthquake locations on an interactive world map with customizable markers and popup information.
@@ -45,7 +43,7 @@ Browse historical earthquake data from 1965 to 2016 dataset from National Earthq
 
 ![App Demo](assets/global_earthquake_map_gif.gif)
 
-### Analytics & Statistics
+### Historical Earthquakes by Country Map
 View trends and patterns in seismic activity through charts and statistical analysis.
 
 **Features:**
@@ -54,7 +52,7 @@ View trends and patterns in seismic activity through charts and statistical anal
 - Depth analysis
 - Geographic distribution statistics
 
-*[Add analytics screenshot/GIF here]*
+![App Demo](assets/earthquake_by_country_gif.gif)
 
 ## Installation & Setup
 
