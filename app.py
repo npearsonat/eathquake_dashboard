@@ -49,7 +49,7 @@ def get_usgs_earthquake_data(magnitude='2.5', timeframe='day'):
     Fetch earthquake data from USGS API
     
     Parameters:
-    - magnitude: minimum magnitude ('1.0', '2.5', '4.0', '5.0', '6.0')  
+    - magnitude: minimum magnitude ('1.0', '2.5', '4.5')  
     - timeframe: time period ('hour', 'day', 'week', 'month', 'year', '5years', '10years')
     
     Returns: DataFrame
@@ -246,7 +246,7 @@ if page == "Live Feed":
     with col1:
         live_magnitude = st.selectbox(
             "Minimum Magnitude:",
-            options=['1.0', '2.5', '4.0', '5.0', '6.0'],
+            options=['1.0', '2.5', '4.5'],
             index=1,
             key="live_mag"
         )
