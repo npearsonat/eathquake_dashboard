@@ -11,8 +11,6 @@ A real-time earthquake monitoring application built with Streamlit that provides
 - **Statistical analysis** and data visualization
 - **Responsive design** that works on desktop and mobile
 
-## Screenshots
-
 ![Dashboard Screenshot](assets/historical_dash.jpeg)
 
 ## Pages & Functionality
@@ -25,7 +23,7 @@ The home page provides an overview of recent seismic activity with key statistic
 - Quick magnitude and timeframe filters
 - Key statistics display
 
-*[Add dashboard screenshot/GIF here]*
+![Dashboard Screenshot](live_feed_gif.gif)
 
 ### 🗺️ Interactive Map
 Visualize earthquake locations on an interactive world map with customizable markers and popup information.
