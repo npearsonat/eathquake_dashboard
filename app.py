@@ -1,4 +1,4 @@
-import streamlit as st
+Fimport streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -460,7 +460,7 @@ else:
             )
             start_year, end_year = year_range
         
-        if page == "Global Earthquake Map":
+        if page == "Historical Earthquake Map":
             # Title and description
             st.header("Global Analysis")
             st.markdown("**Visualization of earthquake activity worldwide. Shows earthquake epicenter locations.Higher magnitude quakes represented by larger and darker circles**")
@@ -627,7 +627,7 @@ else:
                         box_fig.update_layout(xaxis_tickangle=45)
                         st.plotly_chart(box_fig, use_container_width=True)
         
-        elif page == "Earthquake Occurrence By Country":
+        elif page == "Historical Earthquake Occurrence By Country":
             st.header("Earthquake Analysis by Country")
             st.markdown("**Country-level earthquake frequency and magnitude analysis. Quake location attributed using epicenter coordinates**")
             
