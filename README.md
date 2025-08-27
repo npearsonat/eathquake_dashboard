@@ -3,6 +3,8 @@
 A real-time earthquake monitoring application built with Streamlit that provides up-to-date seismic activity data from the USGS Earthquake Hazards Program live API data.
 Two pages dedicated to historical earthquake data sourced from National Earthquake Information Center NEIC dataset. 
 
+Allows users to find information about recent and historical earthquakes, their locations, magnitude and several statistics about earthquake frequency and national occurence. 
+
 ![Dash Image](assets/image.png)
 
 ## Features
