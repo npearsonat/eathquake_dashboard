@@ -273,7 +273,7 @@ if page == "Live Feed":
         
         with col1:
             st.markdown(f"""
-            <div style="padding: 1rem; border: 2px solid #28a745; border-radius: 10px; background-color: #f8fff8; text-align: center;">
+            <div style="padding: 1rem; border: 0.5px solid #28a745; border-radius: 0.5px; background-color: #f8fff8; text-align: center;">
                 <h3 style="margin: 0; color: #28a745; font-size: 1rem;">Total Events</h3>
                 <h2 style="margin: 0; color: #155724;">{len(live_df)}</h2>
             </div>
