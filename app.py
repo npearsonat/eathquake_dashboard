@@ -96,7 +96,7 @@ sidebar = html.Div([
 
 # ── Page: Live Feed ───────────────────────────────────────────────────────────
 live_layout = html.Div([
-    html.H3("🔴 Live Earthquake Feed", className="fw-bold mb-1"),
+    html.H3("Live Earthquake Feed", className="fw-bold mb-1"),
     html.P("Real-time data from the USGS Earthquake Hazards Program, refreshed every 5 minutes.", className="text-muted mb-3"),
     dbc.Row([
         dbc.Col(dbc.Select(id="live-mag", options=[
@@ -124,7 +124,7 @@ live_layout = html.Div([
 
 # ── Page: Global Map ──────────────────────────────────────────────────────────
 map_layout = html.Div([
-    html.H3("🗺️ Global Earthquake Map", className="fw-bold mb-1"),
+    html.H3("Global Earthquake Map", className="fw-bold mb-1"),
     html.P("Historical earthquake data from the NEIC dataset (1965–2016).", className="text-muted mb-3"),
     dbc.Row([
         dbc.Col([
@@ -151,7 +151,7 @@ map_layout = html.Div([
 
 # ── Page: By Country ─────────────────────────────────────────────────────────
 country_layout = html.Div([
-    html.H3("🌐 Earthquakes by Country", className="fw-bold mb-1"),
+    html.H3("Earthquakes by Country", className="fw-bold mb-1"),
     html.P("Country-level frequency and magnitude analysis. Epicenters attributed via coordinate lookup.", className="text-muted mb-3"),
     dbc.Row([
         dbc.Col([
