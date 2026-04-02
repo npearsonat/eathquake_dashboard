@@ -27,7 +27,7 @@ maximum earthquake magnitude, number of 5+ magnitude quakes, as well as average 
 - Quick magnitude and timeframe filters
 - Key statistics display
 
-![Live Demo](assets/live_usgs_demo.gif)
+![Live Demo](assets/earthquake_main.png)
 
 ### Global Historical Earthquake map
 Shows historical earthquake data from 1965 to 2016 dataset from National Earthquake Information Center NEIC static dataset. Contains interactive map with year range and magntiude sliders to view all earthquakes in the dataset based on coordinate locatiojn and magnitude.
@@ -38,7 +38,7 @@ Also contains a bar chart representing the number of quakes by magnitude and a g
 - Magnitude selector
 - Interactive map show magnitude based on circle size and shade. 
 
-![App Demo](assets/global_earthquake_map_gif.gif)
+![App Demo](assets/live_feed.png)
 
 ### Historical Earthquakes by Country Map
 A global map of earthquake frequency by country. Quake epicenter coordinates were roughly attributed to countries, and this map shows an estimate of the number of earthquakes each country has been subject to. This is not 100% accurate and many earthquakes do not occur within the bounds of a country, especially those that occur deep in the ocean. This page also includes a country ranking in terms of number of earthquakes as well as a frequency vs magnitude graph.
@@ -49,7 +49,7 @@ A global map of earthquake frequency by country. Quake epicenter coordinates wer
 - Depth analysis
 - Geographic distribution statistics
 
-![App Demo](assets/earthquake_by_country_gif.gif)
+![App Demo](assets/by_country.png)
 
 ## Installation & Setup
 
