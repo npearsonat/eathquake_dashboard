@@ -79,17 +79,14 @@ hist_max_year = int(hist_df["DateTime"].dt.year.max())
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 sidebar = html.Div([
     html.Div([
-        html.H4("🌍 Earthquake Monitor", className="fw-bold mb-1", style={"color": "#2c3e50"}),
+        html.H4("Earthquake Monitor", className="fw-bold mb-1", style={"color": "#2c3e50"}),
         html.P("Global Seismic Activity", className="text-muted small mb-0"),
     ], style={"padding": "1.5rem 1rem 1rem"}),
     html.Hr(style={"margin": "0 1rem"}),
     dbc.Nav([
-        dbc.NavLink([html.Span("🔴", className="me-2"), "Live Feed"],
-                    href="/live", active="exact", className="nav-item-custom"),
-        dbc.NavLink([html.Span("🗺️", className="me-2"), "Global Map"],
-                    href="/map", active="exact", className="nav-item-custom"),
-        dbc.NavLink([html.Span("🌐", className="me-2"), "By Country"],
-                    href="/country", active="exact", className="nav-item-custom"),
+        dbc.NavLink("Live Feed", href="/live", active="exact", className="nav-item-custom"),
+        dbc.NavLink("Global Map", href="/map", active="exact", className="nav-item-custom"),
+        dbc.NavLink("By Country", href="/country", active="exact", className="nav-item-custom"),
     ], vertical=True, pills=True, style={"padding": "0.5rem"}),
 ], style={
     "position": "fixed", "top": 0, "left": 0, "bottom": 0, "width": "220px",
